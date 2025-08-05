@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Nova Solutions</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
   <style>
-    @keyframes typing {
-      from { width: 0 }
-      to { width: 100% }
-    }
-    .animate-typing {
-      width: 0;
-      animation: typing 2s steps(20) forwards;
+    .typewriter {
+      border-right: 4px solid white;
+      white-space: nowrap;
+      overflow: hidden;
+      display: inline-block;
+      font-weight: 700;
+      font-size: 1.875rem; /* 3xl */
+      color: #60a5fa; /* Tailwind blue-400 */
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
   </style>
 </head>
@@ -20,9 +22,7 @@
   <div class="flex h-screen">
     <!-- Sidebar -->
     <aside class="w-64 bg-gray-800 p-4 space-y-4">
-      <div class="text-3xl font-bold text-blue-300 animate-typing overflow-hidden whitespace-nowrap border-r-4 border-white pr-2">
-        Nova Solutions
-      </div>
+      <div id="sidebar-text" class="typewriter"></div>
       <nav class="space-y-2 mt-4">
         <a href="https://discord.gg/mAARuKzWMf" target="_blank" class="block hover:text-blue-400">🏠 Discord</a>
         <a href="https://nova-software.sellhub.cx/" target="_blank" class="block hover:text-blue-400">🛒 Website</a>
@@ -35,5 +35,41 @@
       <p class="text-gray-400">.</p>
     </main>
   </div>
+
+  <script>
+    const text = "Nova Solutions";
+    const sidebarText = document.getElementById("sidebar-text");
+    const title = document.querySelector("title");
+
+    let index = 0;
+    let forward = true;
+    const speed = 150; 
+
+    function typeWriter() {
+      if (forward) {
+        index++;
+        if (index > text.length) {
+          forward = false;
+          setTimeout(typeWriter, 1000); 
+          return;
+        }
+      } else {
+        index--;
+        if (index < 0) {
+          forward = true;
+          setTimeout(typeWriter, 500); 
+          return;
+        }
+      }
+
+      const currentText = text.substring(0, index);
+      sidebarText.textContent = currentText;
+      title.textContent = currentText || "Nova Solutions"; 
+
+      setTimeout(typeWriter, speed);
+    }
+
+    typeWriter();
+  </script>
 </body>
 </html>

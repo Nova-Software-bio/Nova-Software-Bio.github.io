@@ -19,14 +19,14 @@ function type() {
     el.textContent = text.slice(0, i++);
     if (i > text.length) {
       forward = false;
-      setTimeout(type, 1000); // kurze Pause vor rückwärts
+      setTimeout(type, 1000); 
       return;
     }
   } else {
     el.textContent = text.slice(0, --i);
     if (i < 0) {
       forward = true;
-      setTimeout(type, 1000); // kurze Pause vor erneutem Start
+      setTimeout(type, 1000);
       return;
     }
   }
@@ -42,8 +42,8 @@ type();
     <aside class="w-64 bg-gray-800 p-4 space-y-4">
       <div class="typewriter text-3xl font-bold text-blue-300">Nova Solutions</div>
       <nav class="space-y-2">
-        <a href="#" class="block hover:text-pink-400">🏠 Vouches</a>
-        <a href="#" class="block hover:text-pink-400">🛒 Site Store</a>
+        <a href="#" class="block hover:text-pink-400">🏠 Discord</a>
+        <a href="#" class="block hover:text-pink-400">🛒 Website</a>
         <a href="#" class="block hover:text-pink-400">📷 Media</a>
         <a href="#" class="block hover:text-pink-400">⭐ Partners</a>
         <a href="#" class="block hover:text-pink-400">❓ Misc</a>

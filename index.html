@@ -6,29 +6,30 @@
   <title>Nova Software</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
   <style>
-    .typewriter {
+    #sidebar-text {
       border-right: 4px solid white;
       white-space: nowrap;
       overflow: hidden;
       display: inline-block;
       font-weight: 700;
-      font-size: 1.875rem; /* 3xl */
-      color: #60a5fa; /* Tailwind blue-400 */
+      font-size: 1.875rem; /* text-3xl */
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #60a5fa; /* Tailwind blue-400 */
     }
   </style>
 </head>
 <body class="bg-gray-900 text-white font-sans">
   <div class="flex h-screen">
     <!-- Sidebar -->
-    <aside class="w-64 bg-gray-800 p-4 flex flex-col justify-center items-center space-y-4">
-      <!-- Container für Nova Solutions + Punkt mittig -->
-      <div class="text-center">
-        <div id="sidebar-text" class="typewriter"></div>
-        <p class="text-gray-400 text-2xl mt-2">.</p>
+    <aside class="w-64 bg-gray-800 p-4 space-y-4">
+      <div
+        id="typewriter-container"
+        class="h-24 bg-gray-700 rounded p-4 flex flex-col justify-center items-center text-blue-300 font-bold text-3xl border border-white"
+      >
+        <div id="sidebar-text"></div>
+        <div class="text-white text-3xl mt-2">.</div>
       </div>
-      <!-- Navigation bleibt unten (oder du kannst sie auch anders platzieren) -->
-      <nav class="space-y-2 mt-8 w-full text-center">
+      <nav class="space-y-2 mt-4">
         <a href="https://discord.gg/mAARuKzWMf" target="_blank" class="block hover:text-blue-400">🏠 Discord</a>
         <a href="https://nova-software.sellhub.cx/" target="_blank" class="block hover:text-blue-400">🛒 Website</a>
       </nav>

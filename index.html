@@ -156,9 +156,11 @@
 
     <!-- Main content -->
     <main class="flex-1 flex flex-col p-6 overflow-y-auto">
-      <div class="text-center mb-8">
-        <h1 class="text-4xl font-bold mb-2">Welcome to Nova Software</h1>
-        <p class="text-gray-400">This is a checkpoint for all of our social links.</p>
+      <div class="flex justify-center mb-8">
+        <div class="bg-gray-900 bg-opacity-50 px-8 py-6 rounded-xl text-center shadow-lg">
+          <h1 class="text-4xl font-bold mb-2">Welcome to Nova Software</h1>
+          <p class="text-gray-400">This is a checkpoint for all of our social links.</p>
+        </div>
       </div>
 
       <!-- Cheat Menu Overlay -->
@@ -256,203 +258,45 @@
       });
     });
 
-    // Smoothness slider
-    const smoothnessSlider = document.getElementById('smoothness');
-    const smoothnessValue = document.getElementById('smoothnessValue');
-    smoothnessSlider.addEventListener('input', () => {
-      smoothnessValue.textContent = smoothnessSlider.value;
-    });
-
-    // Aimkey input
+    // Aimkey input key listener
     const aimkeyInput = document.getElementById('aimkey');
     aimkeyInput.addEventListener('focus', () => {
-      aimkeyInput.value = "Press a key...";
-      function onKeyDown(event) {
-        event.preventDefault();
-        let keyName = event.key;
-        if (keyName === " ") keyName = "Space";
-        else if (keyName === "Escape") keyName = "Escape";
-        else if (keyName.length === 1) keyName = keyName.toUpperCase();
-        aimkeyInput.value = keyName;
+      aimkeyInput.value = 'Press a key...';
+      function onKeyDown(e) {
+        e.preventDefault();
+        aimkeyInput.value = e.key.length === 1 ? e.key.toUpperCase() : e.key;
         aimkeyInput.blur();
         window.removeEventListener('keydown', onKeyDown);
-        window.removeEventListener('mousedown', onMouseDown);
-      }
-      function onMouseDown(event) {
-        event.preventDefault();
-        let mouseButtonName;
-        switch(event.button) {
-          case 0: mouseButtonName = "Left Mouse Button"; break;
-          case 1: mouseButtonName = "Middle Mouse Button"; break;
-          case 2: mouseButtonName = "Right Mouse Button"; break;
-          default: mouseButtonName = "Mouse Button " + event.button;
-        }
-        aimkeyInput.value = mouseButtonName;
-        aimkeyInput.blur();
-        window.removeEventListener('keydown', onKeyDown);
-        window.removeEventListener('mousedown', onMouseDown);
       }
       window.addEventListener('keydown', onKeyDown);
-      window.addEventListener('mousedown', onMouseDown);
     });
-    aimkeyInput.addEventListener('keydown', e => e.preventDefault());
 
-    // --- ESP Preview Drawing ---
+    // ESP canvas preview (simple placeholder)
     const canvas = document.getElementById('espCanvas');
     const ctx = canvas.getContext('2d');
 
-    // ESP Settings checkboxes
-    const settings = {
-      enableESP: document.getElementById('enableESP'),
-      outlineESP: document.getElementById('outlineESP'),
-      boxESP: document.getElementById('boxESP'),
-      cornerBoxESP: document.getElementById('cornerBoxESP'),
-      skeletonESP: document.getElementById('skeletonESP'),
-      usernameESP: document.getElementById('usernameESP'),
-      distanceESP: document.getElementById('distanceESP'),
-      platformESP: document.getElementById('platformESP'),
-      lineESP: document.getElementById('lineESP')
-    };
-
-    // Player position on canvas
-    const playerX = canvas.width / 2;
-    const playerY = canvas.height / 2 + 30;
-
-    // Draw loop
-    function drawESP() {
+    function drawESPPreview() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // Example: Draw a rectangle representing a player box
+      ctx.strokeStyle = '#a855f7';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(50, 50, 120, 180);
 
-      if (!settings.enableESP.checked) {
-        // ESP disabled: Show text only
-        ctx.fillStyle = '#777';
-        ctx.font = '16px Arial';
-        ctx.textAlign = 'center';
-        ctx.fillText('ESP Disabled', playerX, canvas.height/2);
-        return;
-      }
-
-      // Helper styles
-      const outlineWidth = settings.outlineESP.checked ? 4 : 2;
-      ctx.lineWidth = outlineWidth;
-
-      // Draw Box or Corner Box
-      if (settings.boxESP.checked || settings.cornerBoxESP.checked) {
-        ctx.strokeStyle = settings.outlineESP.checked ? '#a855f7' : '#00ffff';
-      } else {
-        ctx.strokeStyle = '#00ffff'; // default color
-      }
-
-      // Box dimensions
-      const boxWidth = 60;
-      const boxHeight = 100;
-      const boxLeft = playerX - boxWidth/2;
-      const boxTop = playerY - boxHeight;
-
-      // Draw Box ESP
-      if (settings.boxESP.checked) {
-        ctx.beginPath();
-        ctx.strokeRect(boxLeft, boxTop, boxWidth, boxHeight);
-      }
-
-      // Draw Corner Box ESP
-      if (settings.cornerBoxESP.checked) {
-        const cornerLen = 15;
-        ctx.beginPath();
-        // top-left
-        ctx.moveTo(boxLeft, boxTop + cornerLen);
-        ctx.lineTo(boxLeft, boxTop);
-        ctx.lineTo(boxLeft + cornerLen, boxTop);
-        // top-right
-        ctx.moveTo(boxLeft + boxWidth - cornerLen, boxTop);
-        ctx.lineTo(boxLeft + boxWidth, boxTop);
-        ctx.lineTo(boxLeft + boxWidth, boxTop + cornerLen);
-        // bottom-left
-        ctx.moveTo(boxLeft, boxTop + boxHeight - cornerLen);
-        ctx.lineTo(boxLeft, boxTop + boxHeight);
-        ctx.lineTo(boxLeft + cornerLen, boxTop + boxHeight);
-        // bottom-right
-        ctx.moveTo(boxLeft + boxWidth - cornerLen, boxTop + boxHeight);
-        ctx.lineTo(boxLeft + boxWidth, boxTop + boxHeight);
-        ctx.lineTo(boxLeft + boxWidth, boxTop + boxHeight - cornerLen);
-        ctx.stroke();
-      }
-
-      // Draw Skeleton ESP (stick figure)
-      if (settings.skeletonESP.checked) {
-        ctx.strokeStyle = '#a855f7';
-        ctx.lineWidth = 2;
-        const headRadius = 12;
-
-        // Head
-        ctx.beginPath();
-        ctx.arc(playerX, playerY - boxHeight - headRadius, headRadius, 0, Math.PI * 2);
-        ctx.stroke();
-
-        // Body
-        ctx.beginPath();
-        ctx.moveTo(playerX, playerY - boxHeight);
-        ctx.lineTo(playerX, playerY - boxHeight + 40);
-        ctx.stroke();
-
-        // Arms
-        ctx.beginPath();
-        ctx.moveTo(playerX, playerY - boxHeight + 10);
-        ctx.lineTo(playerX - 20, playerY - boxHeight + 25);
-        ctx.moveTo(playerX, playerY - boxHeight + 10);
-        ctx.lineTo(playerX + 20, playerY - boxHeight + 25);
-        ctx.stroke();
-
-        // Legs
-        ctx.beginPath();
-        ctx.moveTo(playerX, playerY - boxHeight + 40);
-        ctx.lineTo(playerX - 15, playerY - boxHeight + 75);
-        ctx.moveTo(playerX, playerY - boxHeight + 40);
-        ctx.lineTo(playerX + 15, playerY - boxHeight + 75);
-        ctx.stroke();
-      }
-
-      // Draw Username ESP
-      if (settings.usernameESP.checked) {
-        ctx.fillStyle = '#a855f7';
-        ctx.font = 'bold 16px Arial';
-        ctx.textAlign = 'center';
-        ctx.fillText('Nova Software', playerX, playerY - boxHeight - 30);
-      }
-
-      // Draw Distance ESP
-      if (settings.distanceESP.checked) {
-        ctx.fillStyle = '#ffffff';
-        ctx.font = '14px Arial';
-        ctx.textAlign = 'center';
-        ctx.fillText('6.9m', playerX, playerY - boxHeight - 10);
-      }
-
-      // Draw Platform ESP
-      if (settings.platformESP.checked) {
-        ctx.fillStyle = '#3b82f6'; // bright blue
-        ctx.font = '14px Arial';
-        ctx.textAlign = 'center';
-        ctx.fillText('Win', playerX, playerY - boxHeight - 50);
-      }
-
-      // Draw Line ESP
-      if (settings.lineESP.checked) {
-        ctx.strokeStyle = '#a855f7';
-        ctx.lineWidth = outlineWidth;
-        ctx.beginPath();
-        ctx.moveTo(playerX, canvas.height); // bottom middle of canvas 
-        ctx.lineTo(playerX, playerY - boxHeight - 12); // player's head
-        ctx.stroke();
-      }
+      // Skeleton (simplified)
+      ctx.beginPath();
+      ctx.moveTo(110, 60);
+      ctx.lineTo(110, 180);
+      ctx.moveTo(110, 80);
+      ctx.lineTo(80, 110);
+      ctx.moveTo(110, 80);
+      ctx.lineTo(140, 110);
+      ctx.moveTo(110, 180);
+      ctx.lineTo(80, 210);
+      ctx.moveTo(110, 180);
+      ctx.lineTo(140, 210);
+      ctx.stroke();
     }
-
-    // Add event listeners to redraw on toggle change
-    Object.values(settings).forEach(input => {
-      input.addEventListener('change', drawESP);
-    });
-
-    // Initial draw
-    drawESP();
+    drawESPPreview();
   </script>
 </body>
 </html>

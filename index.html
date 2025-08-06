@@ -1,18 +1,15 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nova Software</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
   <style>
-    @keyframes typing {
-      from { width: 0 }
-      to { width: 100% }
-    }
-    .animate-typing {
-      width: 0;
-      animation: typing 2s steps(20) forwards;
+    #follower-image {
+      width: 200px;
+      height: 200px;
+      transition: transform 0.1s linear;
     }
   </style>
 </head>
@@ -30,22 +27,35 @@
       </nav>
     </aside>
 
-    <!-- Main content -->
+    <!-- Main Content -->
+    <main class="flex-1 p-6 overflow-y-auto relative flex flex-col items-center justify-center text-center">
+      <!-- Überschrift -->
+      <h1 class="text-4xl font-bold mb-4">Welcome to Nova Software</h1>
+      <p class="text-gray-400 mb-8">This is a checkpoint for all of our social links.</p>
 
-    <div class="relative w-full h-full">
-  <img
-    src="https://i.imgur.com/aJnvrRw.png" 
-    alt="Follower"
-    id="follower-image"
-    class="w-32 h-32 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-transform duration-75"
-  />
-</div>
-
-    
-    <main class="flex-1 p-6 overflow-y-auto">
-      <h1 class="text-2xl font-bold mb-4">Welcome to Nova Software</h1>
-      <p class="text-gray-400">This is a checkpoit for all of our social links.</p>
+      <!-- Bild, das zur Maus schaut -->
+      <img
+        src="/mnt/data/eeefebf0-dd4e-4ea9-9680-9e75e9cbe1f5.png"
+        alt="Follower"
+        id="follower-image"
+        class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+      />
     </main>
   </div>
+
+  <script>
+    const img = document.getElementById("follower-image");
+
+    document.addEventListener("mousemove", (e) => {
+      const rect = img.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+
+      const angle = Math.atan2(e.clientY - centerY, e.clientX - centerX);
+      const degree = angle * (180 / Math.PI);
+
+      img.style.transform = `translate(-50%, -50%) rotate(${degree}deg)`;
+    });
+  </script>
 </body>
 </html>

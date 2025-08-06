@@ -6,25 +6,22 @@
   <title>Nova Software</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
   <style>
-    #follower-image {
-      width: 600px;
-      height: 400px;
-      transition: transform 0.1s linear;
-      transform-style: preserve-3d;
-      will-change: transform;
+    body {
+      background-color: #0f172a;
     }
-    .perspective-wrapper {
-      perspective: 1000px;
+    .menu-item {
+      @apply px-4 py-2 cursor-pointer hover:bg-gray-700;
+    }
+    .active {
+      @apply bg-gray-700;
     }
   </style>
 </head>
-<body class="bg-gray-900 text-white font-sans">
+<body class="text-white font-sans">
   <div class="flex h-screen">
     <!-- Sidebar -->
     <aside class="w-64 bg-gray-800 p-4 space-y-4">
-      <div class="text-3xl font-bold text-blue-300 animate-typing overflow-hidden whitespace-nowrap border-r-4 border-white pr-2">
-        Nova Software
-      </div>
+      <div class="text-3xl font-bold text-blue-300">Nova Software</div>
       <nav class="space-y-2 mt-4">
         <a href="https://discord.gg/mAARuKzWMf" target="_blank" class="block hover:text-blue-400">🏠 Discord</a>
         <a href="https://nova-software.sellhub.cx/" target="_blank" class="block hover:text-blue-400">🛒 Website</a>
@@ -32,41 +29,102 @@
       </nav>
     </aside>
 
-    <!-- Main Content -->
-    <main class="flex-1 p-6 overflow-y-auto flex flex-col items-center justify-start text-center">
-      <div class="mb-12">
-        <h1 class="text-4xl font-bold mb-4">Welcome to Nova Software</h1>
+    <!-- Main content -->
+    <main class="flex-1 flex flex-col p-6 overflow-y-auto">
+      <div class="text-center mb-8">
+        <h1 class="text-4xl font-bold mb-2">Welcome to Nova Software</h1>
         <p class="text-gray-400">This is a checkpoint for all of our social links.</p>
       </div>
 
-      <div class="relative perspective-wrapper">
-        <img
-          src="https://i.imgur.com/aJnvrRw.png"
-          alt="Follower"
-          id="follower-image"
-          class="mx-auto"
-        />
+      <!-- Cheat Menu -->
+      <div class="flex bg-gray-900 rounded-lg shadow-lg overflow-hidden">
+        <!-- Left Menu -->
+        <div class="w-1/4 bg-gray-800 border-r border-gray-700">
+          <ul id="menu" class="divide-y divide-gray-700">
+            <li class="menu-item active" onclick="showTab('legitbot')">Legitbot</li>
+            <li class="menu-item" onclick="showTab('ragebot')">Ragebot</li>
+            <li class="menu-item" onclick="showTab('visuals')">Visuals</li>
+            <li class="menu-item" onclick="showTab('misc')">Misc</li>
+            <li class="menu-item" onclick="showTab('config')">Config</li>
+          </ul>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="w-3/4 p-4 space-y-4" id="content">
+          <!-- Legitbot -->
+          <div id="legitbot" class="tab">
+            <h2 class="text-xl font-semibold">Legitbot Settings</h2>
+            <label class="flex items-center">
+              <input type="checkbox" class="form-checkbox mr-2" /> Enable Legitbot
+            </label>
+            <label class="block mt-2">
+              Aimbot Key
+              <select class="block w-full bg-gray-700 text-white rounded p-1 mt-1">
+                <option>Mouse 1</option>
+                <option>Mouse 4</option>
+                <option>Alt</option>
+              </select>
+            </label>
+          </div>
+
+          <!-- Ragebot -->
+          <div id="ragebot" class="tab hidden">
+            <h2 class="text-xl font-semibold">Ragebot Settings</h2>
+            <label class="flex items-center">
+              <input type="checkbox" class="form-checkbox mr-2" /> Enable Ragebot
+            </label>
+            <label class="block mt-2">
+              Auto Fire
+              <input type="range" class="w-full mt-1" min="0" max="100" />
+            </label>
+          </div>
+
+          <!-- Visuals -->
+          <div id="visuals" class="tab hidden">
+            <h2 class="text-xl font-semibold">Visual Settings</h2>
+            <label class="flex items-center">
+              <input type="checkbox" class="form-checkbox mr-2" /> ESP Enabled
+            </label>
+            <label class="block mt-2">
+              Box Type
+              <select class="block w-full bg-gray-700 text-white rounded p-1 mt-1">
+                <option>2D</option>
+                <option>2D Corner</option>
+                <option>3D</option>
+              </select>
+            </label>
+          </div>
+
+          <!-- Misc -->
+          <div id="misc" class="tab hidden">
+            <h2 class="text-xl font-semibold">Miscellaneous</h2>
+            <label class="flex items-center">
+              <input type="checkbox" class="form-checkbox mr-2" /> Bunnyhop
+            </label>
+            <label class="flex items-center">
+              <input type="checkbox" class="form-checkbox mr-2" /> Auto Strafe
+            </label>
+          </div>
+
+          <!-- Config -->
+          <div id="config" class="tab hidden">
+            <h2 class="text-xl font-semibold">Config Manager</h2>
+            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Save Config</button>
+            <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded ml-2">Load Config</button>
+          </div>
+        </div>
       </div>
     </main>
   </div>
 
   <script>
-    const img = document.getElementById("follower-image");
-    const wrapper = document.querySelector(".perspective-wrapper");
+    function showTab(id) {
+      document.querySelectorAll('.tab').forEach(el => el.classList.add('hidden'));
+      document.getElementById(id).classList.remove('hidden');
 
-    document.addEventListener("mousemove", (e) => {
-      const rect = wrapper.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-
-      const deltaX = e.clientX - centerX;
-      const deltaY = e.clientY - centerY;
-
-      const rotateX = -deltaY / 25;
-      const rotateY = deltaX / 25;
-
-      img.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-    });
+      document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
+      event.target.classList.add('active');
+    }
   </script>
 </body>
 </html>

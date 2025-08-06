@@ -3,107 +3,41 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Nova Software Cheats - ESP & Aimbot</title>
+  <title>Nova Software</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
   <style>
-    /* Reset & Base */
-    body, html {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: #e0e0e0;
-      overflow-x: hidden;
+    body {
+      background-color: #0f172a;
+    }
+    /* Sidebar Menü-Styling */
+    .menu-item {
+      @apply px-4 py-2 cursor-pointer hover:bg-gray-700;
+    }
+    .active {
+      @apply bg-gray-700;
     }
 
-    header, footer {
-      background-color: #111827;
-      padding: 1rem 2rem;
-      text-align: center;
-      color: #a78bfa;
-      box-shadow: 0 2px 6px #8b5cf633;
-      user-select: none;
-    }
-
-    header h1 {
-      font-weight: 700;
-      font-size: 2rem;
-      margin-bottom: 0.25rem;
-      letter-spacing: 0.06em;
-      text-shadow: 0 0 8px #8b5cf6;
-    }
-
-    header p {
-      font-weight: 400;
-      font-size: 1.1rem;
-      color: #c4b5fdcc;
-    }
-
-    main {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 2rem;
-      min-height: calc(100vh - 160px); /* Header + Footer */
-    }
-
-    /* Menü Overlay: exakt dein Menü unverändert */
+    /* Cheat Menü Overlay Styles */
     .overlay {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
       background-color: rgba(30, 30, 30, 0.95);
       border: 2px solid #444;
       padding: 20px;
       width: 600px;
-      z-index: 9999;
       color: white;
       font-family: sans-serif;
-      display: flex;
-      gap: 20px;
       border-radius: 0.5rem;
-      box-shadow: 0 0 20px #8b5cf6aa;
-      user-select: none;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
     }
 
-    /* Rest des Menüs Styles aus vorherigem Code */
-    .tabs {
-      width: 25%;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      border-right: 2px solid #444;
-    }
+    /* Tabs Buttons */
     .tabs button {
-      padding: 10px;
-      background-color: #222;
-      border-radius: 0.375rem;
-      color: white;
-      cursor: pointer;
-      border: none;
-      font-weight: 600;
       transition: background-color 0.3s;
-      user-select: none;
     }
-    .tabs button.active,
-    .tabs button:hover {
-      background-color: #8b5cf6;
+    .tabs button.active {
+      background-color: #8B5CF6;
     }
-    .content {
-      width: 75%;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px 20px;
-      align-items: center;
-    }
-    label {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-weight: 500;
-    }
+
+    /* Toggle Switch */
     .switch {
       position: relative;
       display: inline-block;
@@ -123,7 +57,7 @@
       right: 0;
       bottom: 0;
       background-color: #444;
-      transition: 0.2s;
+      transition: .2s;
       border-radius: 9999px;
     }
     .slider:before {
@@ -134,7 +68,7 @@
       left: 3px;
       bottom: 3px;
       background-color: white;
-      transition: 0.2s;
+      transition: .2s;
       border-radius: 50%;
     }
     input:checked + .slider {
@@ -143,208 +77,113 @@
     input:checked + .slider:before {
       transform: translateX(20px);
     }
-    .slider-key {
-      margin-left: 10px;
-      background: #222;
-      border-radius: 0.375rem;
-      padding: 3px 8px;
-      min-width: 70px;
-      text-align: center;
-      user-select: none;
-      cursor: pointer;
-      font-weight: 600;
-    }
-    canvas {
-      background-color: #111827;
-      border: 2px solid #8b5cf6;
-      border-radius: 0.5rem;
-      width: 100%;
-      height: 280px;
-      image-rendering: pixelated;
-    }
-
-    /* Hidden class */
-    .hidden {
-      display: none !important;
-    }
-
-    /* Responsive */
-    @media (max-width: 700px) {
-      .overlay {
-        position: static;
-        transform: none;
-        width: 100%;
-        margin: 1rem auto;
-        flex-direction: column;
-        padding: 15px;
-        box-shadow: none;
-        border: none;
-      }
-      .tabs {
-        width: 100%;
-        flex-direction: row;
-        border-right: none;
-        border-bottom: 2px solid #444;
-      }
-      .tabs button {
-        flex: 1;
-        border-radius: 0;
-      }
-      .content {
-        width: 100%;
-        display: block;
-      }
-      canvas {
-        height: 180px;
-      }
-    }
   </style>
 </head>
-<body>
-  <header>
-    <h1>Nova Software Cheats</h1>
-    <p>ESP & Aimbot – Benutzerfreundliches Cheat-Menü mit Preview</p>
-  </header>
+<body class="text-white font-sans">
+  <div class="flex h-screen">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-gray-800 p-4 space-y-4">
+      <div class="text-3xl font-bold text-blue-300">Nova Software</div>
+      <nav class="space-y-2 mt-4">
+        <a href="https://discord.gg/mAARuKzWMf" target="_blank" class="block hover:text-blue-400">🏠 Discord</a>
+        <a href="https://nova-software.sellhub.cx/" target="_blank" class="block hover:text-blue-400">🛒 Website</a>
+        <a href="https://www.youtube.com/@NovaCheets" target="_blank" class="block hover:text-blue-400">▶ Youtube</a>
+      </nav>
+    </aside>
 
-  <main>
-    <!-- Du kannst hier noch mehr Content hinzufügen, z.B. Anleitung oder News -->
-
-    <!-- Dein Overlay Menü unverändert -->
-    <div class="overlay" role="main" aria-label="Cheat Menu Overlay">
-      <!-- Tabs -->
-      <div class="tabs" role="tablist" aria-orientation="vertical">
-        <button role="tab" aria-selected="true" id="tab-aimbot" class="active" tabindex="0" data-tab="aimbot">Aimbot</button>
-        <button role="tab" aria-selected="false" id="tab-visuals" tabindex="-1" data-tab="visuals">Visuals</button>
-        <button role="tab" aria-selected="false" id="tab-extra" tabindex="-1" data-tab="extra">Extra</button>
+    <!-- Main content -->
+    <main class="flex-1 flex flex-col p-6 overflow-y-auto">
+      <div class="text-center mb-8">
+        <h1 class="text-4xl font-bold mb-2">Welcome to Nova Software</h1>
+        <p class="text-gray-400">This is a checkpoint for all of our social links.</p>
       </div>
 
-      <!-- Content -->
-      <div class="content">
-        <!-- Aimbot Tab Content -->
-        <div id="aimbot" class="tab-content" role="tabpanel" aria-labelledby="tab-aimbot">
-          <label>
-            Enable Aimbot
-            <label class="switch">
-              <input type="checkbox" id="enableAimbot" checked />
-              <span class="slider"></span>
-            </label>
-          </label>
+      <!-- Cheat Menu Overlay -->
+      <div class="overlay mx-auto">
+        <div class="text-center text-lg font-bold mb-4">
+          Frosty <span class="text-purple-400">Silent</span>
+        </div>
+        <div class="flex">
+          <!-- Tabs -->
+          <div class="tabs w-1/4 space-y-2 pr-4 border-r border-gray-600">
+            <button class="block w-full py-2 px-4 bg-purple-600 rounded text-white active" data-tab="aimbot">Aimbot</button>
+            <button class="block w-full py-2 px-4 bg-gray-800 hover:bg-purple-600 rounded text-white" data-tab="visuals">Visuals</button>
+            <button class="block w-full py-2 px-4 bg-gray-800 hover:bg-purple-600 rounded text-white" data-tab="extra">Extra</button>
+          </div>
 
-          <label>
-            Smoothness
-            <input type="range" id="smoothness" min="1" max="100" value="50" />
-          </label>
-
-          <label>
-            Aim Key
-            <div style="display:flex; align-items:center;">
-              <button id="aimKeyButton" class="slider-key" aria-label="Set Aim Key" tabindex="0">Mouse 1</button>
+          <!-- Content -->
+          <div class="w-3/4 pl-4">
+            <!-- AIMBOT TAB -->
+            <div id="aimbot" class="tab-content grid grid-cols-2 gap-y-3">
+              <label class="flex justify-between items-center">
+                Enable Aimbot
+                <span class="switch"><input type="checkbox" id="enableAimbot"><span class="slider"></span></span>
+              </label>
+              <label class="flex justify-between items-center">
+                Auto Shoot
+                <span class="switch"><input type="checkbox" id="autoShoot"><span class="slider"></span></span>
+              </label>
+              <label class="flex justify-between items-center">
+                Aim Key
+                <button id="aimKeyButton" class="bg-gray-700 rounded px-3 py-1 text-white hover:bg-purple-600 transition">Mouse 1</button>
+              </label>
             </div>
-          </label>
-        </div>
 
-        <!-- Visuals Tab Content -->
-        <div id="visuals" class="tab-content hidden" role="tabpanel" aria-labelledby="tab-visuals" style="grid-column: span 2;">
-          <label>
-            Enable ESP
-            <label class="switch">
-              <input type="checkbox" id="enableESP" checked />
-              <span class="slider"></span>
-            </label>
-          </label>
-          <label>
-            Outline ESP
-            <label class="switch">
-              <input type="checkbox" id="outlineESP" />
-              <span class="slider"></span>
-            </label>
-          </label>
-          <label>
-            Box ESP
-            <label class="switch">
-              <input type="checkbox" id="boxESP" checked />
-              <span class="slider"></span>
-            </label>
-          </label>
-          <label>
-            Corner Box ESP
-            <label class="switch">
-              <input type="checkbox" id="cornerBoxESP" />
-              <span class="slider"></span>
-            </label>
-          </label>
-          <label>
-            Skeleton ESP
-            <label class="switch">
-              <input type="checkbox" id="skeletonESP" checked />
-              <span class="slider"></span>
-            </label>
-          </label>
-          <label>
-            Username ESP
-            <label class="switch">
-              <input type="checkbox" id="usernameESP" checked />
-              <span class="slider"></span>
-            </label>
-          </label>
-          <label>
-            Distance ESP
-            <label class="switch">
-              <input type="checkbox" id="distanceESP" checked />
-              <span class="slider"></span>
-            </label>
-          </label>
-          <label>
-            Platform ESP
-            <label class="switch">
-              <input type="checkbox" id="platformESP" />
-              <span class="slider"></span>
-            </label>
-          </label>
-          <label>
-            Line ESP
-            <label class="switch">
-              <input type="checkbox" id="lineESP" checked />
-              <span class="slider"></span>
-            </label>
-          </label>
+            <!-- VISUALS TAB -->
+            <div id="visuals" class="tab-content hidden grid grid-cols-2 gap-y-3">
+              <label class="flex justify-between items-center">Enable ESP <span class="switch"><input type="checkbox" id="enableESP" checked><span class="slider"></span></span></label>
+              <label class="flex justify-between items-center">Enable Outline ESP <span class="switch"><input type="checkbox" id="outlineESP" checked><span class="slider"></span></span></label>
+              <label class="flex justify-between items-center">Box ESP <span class="switch"><input type="checkbox" id="boxESP"><span class="slider"></span></span></label>
+              <label class="flex justify-between items-center">Corner Box ESP <span class="switch"><input type="checkbox" id="cornerBoxESP"><span class="slider"></span></span></label>
+              <label class="flex justify-between items-center">Skeleton ESP <span class="switch"><input type="checkbox" id="skeletonESP" checked><span class="slider"></span></span></label>
+              <label class="flex justify-between items-center">Username ESP <span class="switch"><input type="checkbox" id="usernameESP" checked><span class="slider"></span></span></label>
+              <label class="flex justify-between items-center">Distance ESP <span class="switch"><input type="checkbox" id="distanceESP" checked><span class="slider"></span></span></label>
+              <label class="flex justify-between items-center">Platform ESP <span class="switch"><input type="checkbox" id="platformESP"><span class="slider"></span></span></label>
+              <label class="flex justify-between items-center">Line ESP <span class="switch"><input type="checkbox" id="lineESP" checked><span class="slider"></span></span></label>
+              <!-- ESP Preview Canvas -->
+              <div class="col-span-2 mt-2">
+                <canvas id="espPreview" width="560" height="280" class="border border-gray-600 rounded bg-gray-900"></canvas>
+              </div>
+            </div>
 
-          <!-- Preview Canvas -->
-          <canvas id="espPreview" width="320" height="280" aria-label="ESP Preview"></canvas>
-        </div>
-
-        <!-- Extra Tab Content -->
-        <div id="extra" class="tab-content hidden" role="tabpanel" aria-labelledby="tab-extra" style="grid-column: span 2;">
-          <p>Extra settings coming soon...</p>
+            <!-- EXTRA TAB -->
+            <div id="extra" class="tab-content hidden grid grid-cols-2 gap-y-3">
+              <label class="flex justify-between items-center">Bunnyhop <span class="switch"><input type="checkbox"><span class="slider"></span></span></label>
+              <label class="flex justify-between items-center">Auto Strafe <span class="switch"><input type="checkbox"><span class="slider"></span></span></label>
+              <label class="flex justify-between items-center">Enable Radar <span class="switch"><input type="checkbox"><span class="slider"></span></span></label>
+              <label class="flex justify-between items-center">Show Crosshair <span class="switch"><input type="checkbox"><span class="slider"></span></span></label>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </main>
 
-  <footer>
-    <small>© 2025 Nova Software • <a href="#" style="color:#a78bfa; text-decoration:underline;">Privacy Policy</a></small>
-  </footer>
+    </main>
+  </div>
 
   <script>
-    // Tabs switch logic
+    // Tabs Funktionalität
     const tabs = document.querySelectorAll('.tabs button');
     const tabContents = document.querySelectorAll('.tab-content');
 
     tabs.forEach(tab => {
       tab.addEventListener('click', () => {
+        // Aktiven Tab Button setzen
         tabs.forEach(t => {
-          t.classList.remove('active');
-          t.setAttribute('aria-selected', 'false');
-          t.tabIndex = -1;
+          t.classList.remove('bg-purple-600', 'active');
+          t.classList.add('bg-gray-800');
         });
-        tabContents.forEach(c => c.classList.add('hidden'));
+        tab.classList.add('bg-purple-600', 'active');
+        tab.classList.remove('bg-gray-800');
 
-        tab.classList.add('active');
-        tab.setAttribute('aria-selected', 'true');
-        tab.tabIndex = 0;
-
-        const target = tab.dataset.tab;
-        document.getElementById(target).classList.remove('hidden');
+        // Passenden Content anzeigen
+        const target = tab.getAttribute('data-tab');
+        tabContents.forEach(content => {
+          if (content.id === target) {
+            content.classList.remove('hidden');
+          } else {
+            content.classList.add('hidden');
+          }
+        });
       });
     });
 
@@ -357,14 +196,11 @@
 
       const keyHandler = (e) => {
         e.preventDefault();
-        // Ignore modifier-only keys
         const ignored = ['Shift', 'Control', 'Alt', 'Meta'];
         if (!ignored.includes(e.key)) {
+          // Sonderfall Maus-Tasten
           if(e.code.startsWith('Mouse')) {
-            // Mouse keys e.g. Mouse1, Mouse2
             aimKey = e.code.replace('Mouse', 'Mouse ');
-          } else if(e.code.startsWith('Digit')) {
-            aimKey = e.key;
           } else {
             aimKey = e.key.length === 1 ? e.key.toUpperCase() : e.key;
           }
@@ -376,7 +212,7 @@
       window.addEventListener('keydown', keyHandler, { once: true });
     });
 
-    // ESP Preview Drawing - gleiche Logik wie vorher
+    // ESP Preview Zeichnung
     const canvas = document.getElementById('espPreview');
     const ctx = canvas.getContext('2d');
 
@@ -396,15 +232,13 @@
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       if (!settings.enableESP.checked) return;
 
-      // Player box dimensions
       const boxWidth = 100;
       const boxHeight = 200;
       const boxLeft = (canvas.width - boxWidth) / 2;
       const boxTop = (canvas.height - boxHeight) / 2;
-
       const playerX = boxLeft + boxWidth / 2;
 
-      // Outline ESP - thick dashed outline
+      // Outline ESP
       if (settings.outlineESP.checked) {
         ctx.lineWidth = 4;
         ctx.strokeStyle = '#a855f7';
@@ -413,7 +247,7 @@
         ctx.setLineDash([]);
       }
 
-      // Box ESP - full rectangle
+      // Box ESP
       if (settings.boxESP.checked) {
         ctx.lineWidth = 2;
         ctx.strokeStyle = '#8b5cf6';
@@ -425,106 +259,103 @@
         ctx.lineWidth = 3;
         ctx.strokeStyle = '#a855f7';
         const len = 20;
-        // Top-left
         ctx.beginPath();
+        // Top-left
         ctx.moveTo(boxLeft, boxTop + len);
         ctx.lineTo(boxLeft, boxTop);
         ctx.lineTo(boxLeft + len, boxTop);
-        ctx.stroke();
         // Top-right
-        ctx.beginPath();
         ctx.moveTo(boxLeft + boxWidth - len, boxTop);
         ctx.lineTo(boxLeft + boxWidth, boxTop);
         ctx.lineTo(boxLeft + boxWidth, boxTop + len);
-        ctx.stroke();
         // Bottom-left
-        ctx.beginPath();
         ctx.moveTo(boxLeft, boxTop + boxHeight - len);
         ctx.lineTo(boxLeft, boxTop + boxHeight);
         ctx.lineTo(boxLeft + len, boxTop + boxHeight);
-        ctx.stroke();
         // Bottom-right
-        ctx.beginPath();
         ctx.moveTo(boxLeft + boxWidth - len, boxTop + boxHeight);
         ctx.lineTo(boxLeft + boxWidth, boxTop + boxHeight);
         ctx.lineTo(boxLeft + boxWidth, boxTop + boxHeight - len);
         ctx.stroke();
       }
 
-      // Skeleton ESP (Stickman) inside the box
+      // Skeleton ESP (simplified stick figure)
       if (settings.skeletonESP.checked) {
         ctx.strokeStyle = '#a855f7';
         ctx.lineWidth = 2;
-        const headRadius = 12;
+        const centerX = playerX;
+        const topY = boxTop + 30;
+        const bottomY = boxTop + boxHeight - 20;
 
-        // Head inside box (center horizontally, near top of box)
         ctx.beginPath();
-        ctx.arc(playerX, boxTop + headRadius + 5, headRadius, 0, Math.PI * 2);
+        // Head
+        ctx.arc(centerX, topY, 15, 0, 2 * Math.PI);
         ctx.stroke();
 
         // Body
         ctx.beginPath();
-        ctx.moveTo(playerX, boxTop + headRadius * 2 + 5);
-        ctx.lineTo(playerX, boxTop + boxHeight - 20);
+        ctx.moveTo(centerX, topY + 15);
+        ctx.lineTo(centerX, bottomY);
         ctx.stroke();
 
         // Arms
         ctx.beginPath();
-        ctx.moveTo(playerX, boxTop + headRadius * 3);
-        ctx.lineTo(playerX - 20, boxTop + boxHeight / 2);
-        ctx.moveTo(playerX, boxTop + headRadius * 3);
-        ctx.lineTo(playerX + 20, boxTop + boxHeight / 2);
+        ctx.moveTo(centerX, topY + 40);
+        ctx.lineTo(centerX - 30, topY + 70);
+        ctx.moveTo(centerX, topY + 40);
+        ctx.lineTo(centerX + 30, topY + 70);
         ctx.stroke();
 
         // Legs
         ctx.beginPath();
-        ctx.moveTo(playerX, boxTop + boxHeight - 20);
-        ctx.lineTo(playerX - 15, boxTop + boxHeight - 5);
-        ctx.moveTo(playerX, boxTop + boxHeight - 20);
-        ctx.lineTo(playerX + 15, boxTop + boxHeight - 5);
+        ctx.moveTo(centerX, bottomY);
+        ctx.lineTo(centerX - 25, bottomY + 50);
+        ctx.moveTo(centerX, bottomY);
+        ctx.lineTo(centerX + 25, bottomY + 50);
         ctx.stroke();
       }
 
-      // Username ESP (text above head)
+      // Username ESP
       if (settings.usernameESP.checked) {
         ctx.fillStyle = '#a855f7';
-        ctx.font = 'bold 18px Arial';
+        ctx.font = 'bold 20px Arial';
         ctx.textAlign = 'center';
-        ctx.fillText('Nova Software', playerX, boxTop - 10);
+        ctx.fillText('Player123', playerX, boxTop - 10);
       }
 
-      // Distance ESP (text near feet)
+      // Distance ESP
       if (settings.distanceESP.checked) {
         ctx.fillStyle = '#a855f7';
-        ctx.font = '14px Arial';
+        ctx.font = '16px Arial';
         ctx.textAlign = 'center';
-        ctx.fillText('6.9 m', playerX, boxTop + boxHeight + 18);
+        ctx.fillText('150m', playerX, boxTop + boxHeight + 20);
       }
 
-      // Platform ESP (text near feet right side)
+      // Platform ESP
       if (settings.platformESP.checked) {
         ctx.fillStyle = '#a855f7';
-        ctx.font = '14px Arial';
-        ctx.textAlign = 'right';
-        ctx.fillText('Win', boxLeft + boxWidth, boxTop + boxHeight + 18);
+        ctx.font = '16px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('PC', playerX, boxTop + boxHeight + 40);
       }
 
-      // Line ESP (line to head)
+      // Line ESP
       if (settings.lineESP.checked) {
         ctx.strokeStyle = '#a855f7';
-        ctx.lineWidth = 1.5;
+        ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.moveTo(canvas.width / 2, canvas.height);
-        ctx.lineTo(playerX, boxTop + 15);
+        ctx.lineTo(playerX, boxTop + boxHeight);
         ctx.stroke();
       }
     }
 
-    // Initial draw and redraw on changes
-    drawESP();
-    Object.values(settings).forEach(input => {
-      input.addEventListener('change', drawESP);
-    });
+    // ESP Preview regelmäßig aktualisieren
+    function updateESPPreview() {
+      drawESP();
+      requestAnimationFrame(updateESPPreview);
+    }
+    updateESPPreview();
   </script>
 </body>
 </html>

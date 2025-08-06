@@ -3,19 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Nova Software</title>
+  <title>Nova Software ESP Preview</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
   <style>
     body {
       background-color: #0f172a;
     }
-    /* Fixed overlay size to match Visuals tab */
     .overlay {
       background-color: rgba(30, 30, 30, 0.95);
       border: 2px solid #444;
       padding: 20px;
       width: 900px;
-      height: 480px; /* Höhe Visuals Tab */
+      height: 480px;
       color: white;
       font-family: sans-serif;
       border-radius: 0.5rem;
@@ -23,7 +22,6 @@
       flex-direction: row;
       gap: 10px;
     }
-
     .tabs {
       width: 25%;
       border-right: 1px solid #666;
@@ -31,7 +29,6 @@
       flex-direction: column;
       gap: 8px;
     }
-
     .tabs button {
       width: 100%;
       padding: 10px;
@@ -43,11 +40,9 @@
       transition: background-color 0.3s;
       font-weight: 600;
     }
-
     .tabs button.active {
       background-color: #8b5cf6;
     }
-
     .tab-content {
       width: 50%;
       padding-left: 20px;
@@ -58,16 +53,12 @@
       flex-direction: column;
       gap: 15px;
     }
-
     .tab-pane {
       display: none;
     }
-
     .tab-pane.active {
       display: block;
     }
-
-    /* Switch Style */
     .switch {
       position: relative;
       display: inline-block;
@@ -104,8 +95,6 @@
     input:checked + .slider:before {
       transform: translateX(20px);
     }
-
-    /* Aimkey input style */
     #aimkey {
       background-color: #1e1e1e;
       color: white;
@@ -119,8 +108,6 @@
     #aimkey:focus {
       outline: 2px solid #8b5cf6;
     }
-
-    /* Preview Fenster */
     .preview {
       width: 25%;
       background-color: #1e1e1e;
@@ -135,26 +122,23 @@
       align-items: center;
       user-select: none;
     }
-
     .preview h2 {
       color: #8b5cf6;
       margin-bottom: 15px;
       font-weight: 700;
     }
-
     .preview-box {
       width: 100%;
       height: 280px;
       background-color: #2a2a2a;
       border: 2px solid #555;
       border-radius: 0.5rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: #777;
-      font-style: italic;
-      text-align: center;
-      padding: 10px;
+      position: relative;
+    }
+    canvas {
+      display: block;
+      background: #2a2a2a;
+      border-radius: 6px;
     }
   </style>
 </head>
@@ -208,31 +192,31 @@
 
           <div id="visuals" class="tab-pane">
             <label class="flex justify-between items-center mb-2">Enable ESP
-              <span class="switch"><input type="checkbox" checked><span class="slider"></span></span>
+              <span class="switch"><input type="checkbox" id="enableESP" checked><span class="slider"></span></span>
             </label>
-            <label class="flex justify-between items-center mb-2">Enable Outline ESP
-              <span class="switch"><input type="checkbox" checked><span class="slider"></span></span>
+            <label class="flex justify-between items-center mb-2">Outline ESP
+              <span class="switch"><input type="checkbox" id="outlineESP" checked><span class="slider"></span></span>
             </label>
             <label class="flex justify-between items-center mb-2">Box ESP
-              <span class="switch"><input type="checkbox"><span class="slider"></span></span>
+              <span class="switch"><input type="checkbox" id="boxESP"><span class="slider"></span></span>
             </label>
             <label class="flex justify-between items-center mb-2">Corner Box ESP
-              <span class="switch"><input type="checkbox"><span class="slider"></span></span>
+              <span class="switch"><input type="checkbox" id="cornerBoxESP"><span class="slider"></span></span>
             </label>
             <label class="flex justify-between items-center mb-2">Skeleton ESP
-              <span class="switch"><input type="checkbox" checked><span class="slider"></span></span>
+              <span class="switch"><input type="checkbox" id="skeletonESP" checked><span class="slider"></span></span>
             </label>
             <label class="flex justify-between items-center mb-2">Username ESP
-              <span class="switch"><input type="checkbox" checked><span class="slider"></span></span>
+              <span class="switch"><input type="checkbox" id="usernameESP" checked><span class="slider"></span></span>
             </label>
             <label class="flex justify-between items-center mb-2">Distance ESP
-              <span class="switch"><input type="checkbox" checked><span class="slider"></span></span>
+              <span class="switch"><input type="checkbox" id="distanceESP" checked><span class="slider"></span></span>
             </label>
             <label class="flex justify-between items-center mb-2">Platform ESP
-              <span class="switch"><input type="checkbox"><span class="slider"></span></span>
+              <span class="switch"><input type="checkbox" id="platformESP"><span class="slider"></span></span>
             </label>
             <label class="flex justify-between items-center mb-2">Line ESP
-              <span class="switch"><input type="checkbox" checked><span class="slider"></span></span>
+              <span class="switch"><input type="checkbox" id="lineESP" checked><span class="slider"></span></span>
             </label>
           </div>
 
@@ -256,9 +240,8 @@
 
         <div class="preview">
           <h2>Visuals Preview</h2>
-          <div class="preview-box" id="visualPreview">
-            Preview Content<br />
-            (z.B. ESP-Darstellung)
+          <div class="preview-box">
+            <canvas id="espCanvas" width="220" height="280"></canvas>
           </div>
         </div>
       </div>
@@ -266,49 +249,37 @@
   </div>
 
   <script>
-    // Tab switching
+    // Tabs switching code (unchanged)
     const tabs = document.querySelectorAll('.tabs button');
     const tabPanes = document.querySelectorAll('.tab-pane');
-
     tabs.forEach(tab => {
       tab.addEventListener('click', () => {
-        // Buttons active state
-        tabs.forEach(t => {
-          t.classList.remove('active');
-        });
+        tabs.forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
-
-        // Show tab pane
         const target = tab.getAttribute('data-tab');
         tabPanes.forEach(pane => {
-          if (pane.id === target) {
-            pane.classList.add('active');
-          } else {
-            pane.classList.remove('active');
-          }
+          pane.classList.toggle('active', pane.id === target);
         });
       });
     });
 
-    // Smoothness slider update
+    // Smoothness slider
     const smoothnessSlider = document.getElementById('smoothness');
     const smoothnessValue = document.getElementById('smoothnessValue');
     smoothnessSlider.addEventListener('input', () => {
       smoothnessValue.textContent = smoothnessSlider.value;
     });
 
-    // Aimkey input: support keyboard keys and mouse buttons (English names)
+    // Aimkey input
     const aimkeyInput = document.getElementById('aimkey');
     aimkeyInput.addEventListener('focus', () => {
       aimkeyInput.value = "Press a key...";
       function onKeyDown(event) {
         event.preventDefault();
         let keyName = event.key;
-
         if (keyName === " ") keyName = "Space";
         else if (keyName === "Escape") keyName = "Escape";
         else if (keyName.length === 1) keyName = keyName.toUpperCase();
-
         aimkeyInput.value = keyName;
         aimkeyInput.blur();
         window.removeEventListener('keydown', onKeyDown);
@@ -316,7 +287,6 @@
       }
       function onMouseDown(event) {
         event.preventDefault();
-        // Mouse buttons mapped to English names
         let mouseButtonName;
         switch(event.button) {
           case 0: mouseButtonName = "Left Mouse Button"; break;
@@ -332,9 +302,164 @@
       window.addEventListener('keydown', onKeyDown);
       window.addEventListener('mousedown', onMouseDown);
     });
-
-    // Prevent manual typing in Aimkey Input
     aimkeyInput.addEventListener('keydown', e => e.preventDefault());
+
+    // --- ESP Preview Drawing ---
+    const canvas = document.getElementById('espCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // ESP Settings checkboxes
+    const settings = {
+      enableESP: document.getElementById('enableESP'),
+      outlineESP: document.getElementById('outlineESP'),
+      boxESP: document.getElementById('boxESP'),
+      cornerBoxESP: document.getElementById('cornerBoxESP'),
+      skeletonESP: document.getElementById('skeletonESP'),
+      usernameESP: document.getElementById('usernameESP'),
+      distanceESP: document.getElementById('distanceESP'),
+      platformESP: document.getElementById('platformESP'),
+      lineESP: document.getElementById('lineESP')
+    };
+
+    // Player position on canvas
+    const playerX = canvas.width / 2;
+    const playerY = canvas.height / 2 + 30;
+
+    // Draw loop
+    function drawESP() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (!settings.enableESP.checked) {
+        // ESP disabled: Show text only
+        ctx.fillStyle = '#777';
+        ctx.font = '16px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('ESP Disabled', playerX, canvas.height/2);
+        return;
+      }
+
+      // Helper styles
+      const outlineWidth = settings.outlineESP.checked ? 4 : 2;
+      ctx.lineWidth = outlineWidth;
+
+      // Draw Box or Corner Box
+      if (settings.boxESP.checked || settings.cornerBoxESP.checked) {
+        ctx.strokeStyle = settings.outlineESP.checked ? '#a855f7' : '#00ffff';
+      } else {
+        ctx.strokeStyle = '#00ffff'; // default color
+      }
+
+      // Box dimensions
+      const boxWidth = 60;
+      const boxHeight = 100;
+      const boxLeft = playerX - boxWidth/2;
+      const boxTop = playerY - boxHeight;
+
+      // Draw Box ESP
+      if (settings.boxESP.checked) {
+        ctx.beginPath();
+        ctx.strokeRect(boxLeft, boxTop, boxWidth, boxHeight);
+      }
+
+      // Draw Corner Box ESP
+      if (settings.cornerBoxESP.checked) {
+        const cornerLen = 15;
+        ctx.beginPath();
+        // top-left
+        ctx.moveTo(boxLeft, boxTop + cornerLen);
+        ctx.lineTo(boxLeft, boxTop);
+        ctx.lineTo(boxLeft + cornerLen, boxTop);
+        // top-right
+        ctx.moveTo(boxLeft + boxWidth - cornerLen, boxTop);
+        ctx.lineTo(boxLeft + boxWidth, boxTop);
+        ctx.lineTo(boxLeft + boxWidth, boxTop + cornerLen);
+        // bottom-left
+        ctx.moveTo(boxLeft, boxTop + boxHeight - cornerLen);
+        ctx.lineTo(boxLeft, boxTop + boxHeight);
+        ctx.lineTo(boxLeft + cornerLen, boxTop + boxHeight);
+        // bottom-right
+        ctx.moveTo(boxLeft + boxWidth - cornerLen, boxTop + boxHeight);
+        ctx.lineTo(boxLeft + boxWidth, boxTop + boxHeight);
+        ctx.lineTo(boxLeft + boxWidth, boxTop + boxHeight - cornerLen);
+        ctx.stroke();
+      }
+
+      // Draw Skeleton ESP (stick figure)
+      if (settings.skeletonESP.checked) {
+        ctx.strokeStyle = '#a855f7';
+        ctx.lineWidth = 2;
+        const headRadius = 12;
+
+        // Head
+        ctx.beginPath();
+        ctx.arc(playerX, playerY - boxHeight - headRadius, headRadius, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // Body
+        ctx.beginPath();
+        ctx.moveTo(playerX, playerY - boxHeight);
+        ctx.lineTo(playerX, playerY - boxHeight + 40);
+        ctx.stroke();
+
+        // Arms
+        ctx.beginPath();
+        ctx.moveTo(playerX, playerY - boxHeight + 10);
+        ctx.lineTo(playerX - 20, playerY - boxHeight + 25);
+        ctx.moveTo(playerX, playerY - boxHeight + 10);
+        ctx.lineTo(playerX + 20, playerY - boxHeight + 25);
+        ctx.stroke();
+
+        // Legs
+        ctx.beginPath();
+        ctx.moveTo(playerX, playerY - boxHeight + 40);
+        ctx.lineTo(playerX - 15, playerY - boxHeight + 75);
+        ctx.moveTo(playerX, playerY - boxHeight + 40);
+        ctx.lineTo(playerX + 15, playerY - boxHeight + 75);
+        ctx.stroke();
+      }
+
+      // Draw Username ESP
+      if (settings.usernameESP.checked) {
+        ctx.fillStyle = '#a855f7';
+        ctx.font = 'bold 16px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Nova Software', playerX, playerY - boxHeight - 30);
+      }
+
+      // Draw Distance ESP
+      if (settings.distanceESP.checked) {
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '14px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('6.9m', playerX, playerY - boxHeight - 10);
+      }
+
+      // Draw Platform ESP
+      if (settings.platformESP.checked) {
+        ctx.fillStyle = '#3b82f6'; // bright blue
+        ctx.font = '14px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Win', playerX, playerY - boxHeight - 50);
+      }
+
+      // Draw Line ESP
+      if (settings.lineESP.checked) {
+        ctx.strokeStyle = '#a855f7';
+        ctx.lineWidth = outlineWidth;
+        ctx.beginPath();
+        ctx.moveTo(playerX, canvas.height); // bottom middle of canvas (you, the local player)
+        ctx.lineTo(playerX, playerY - boxHeight - 12); // player's head
+        ctx.stroke();
+      }
+    }
+
+    // Add event listeners to redraw on toggle change
+    Object.values(settings).forEach(input => {
+      input.addEventListener('change', drawESP);
+    });
+
+    // Initial draw
+    drawESP();
   </script>
 </body>
 </html>

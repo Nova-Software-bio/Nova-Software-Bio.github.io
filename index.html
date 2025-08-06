@@ -2,18 +2,80 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Nova Software</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
   <style>
     body {
       background-color: #0f172a;
     }
+    /* Sidebar Menü-Styling */
     .menu-item {
       @apply px-4 py-2 cursor-pointer hover:bg-gray-700;
     }
     .active {
       @apply bg-gray-700;
+    }
+
+    /* Cheat Menü Overlay Styles */
+    .overlay {
+      background-color: rgba(30, 30, 30, 0.95);
+      border: 2px solid #444;
+      padding: 20px;
+      width: 600px;
+      color: white;
+      font-family: sans-serif;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+    }
+
+    /* Tabs Buttons */
+    .tabs button {
+      transition: background-color 0.3s;
+    }
+    .tabs button.active {
+      background-color: #8B5CF6;
+    }
+
+    /* Toggle Switch */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 40px;
+      height: 20px;
+    }
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #444;
+      transition: .2s;
+      border-radius: 9999px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 14px;
+      width: 14px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .2s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background-color: #a855f7;
+    }
+    input:checked + .slider:before {
+      transform: translateX(20px);
     }
   </style>
 </head>
@@ -36,95 +98,82 @@
         <p class="text-gray-400">This is a checkpoint for all of our social links.</p>
       </div>
 
-      <!-- Cheat Menu -->
-      <div class="flex bg-gray-900 rounded-lg shadow-lg overflow-hidden">
-        <!-- Left Menu -->
-        <div class="w-1/4 bg-gray-800 border-r border-gray-700">
-          <ul id="menu" class="divide-y divide-gray-700">
-            <li class="menu-item active" onclick="showTab('legitbot')">Legitbot</li>
-            <li class="menu-item" onclick="showTab('ragebot')">Ragebot</li>
-            <li class="menu-item" onclick="showTab('visuals')">Visuals</li>
-            <li class="menu-item" onclick="showTab('misc')">Misc</li>
-            <li class="menu-item" onclick="showTab('config')">Config</li>
-          </ul>
+      <!-- Cheat Menu Overlay -->
+      <div class="overlay mx-auto">
+        <div class="text-center text-lg font-bold mb-4">
+          Frosty <span class="text-purple-400">Silent</span>
         </div>
+        <div class="flex">
+          <!-- Tabs -->
+          <div class="tabs w-1/4 space-y-2 pr-4 border-r border-gray-600">
+            <button class="block w-full py-2 px-4 bg-purple-600 rounded text-white active" data-tab="aimbot">Aimbot</button>
+            <button class="block w-full py-2 px-4 bg-gray-800 hover:bg-purple-600 rounded text-white" data-tab="visuals">Visuals</button>
+            <button class="block w-full py-2 px-4 bg-gray-800 hover:bg-purple-600 rounded text-white" data-tab="extra">Extra</button>
+          </div>
 
-        <!-- Right Panel -->
-        <div class="w-3/4 p-4 space-y-4" id="content">
-          <!-- Legitbot -->
-          <div id="legitbot" class="tab">
-            <h2 class="text-xl font-semibold">Legitbot Settings</h2>
-            <label class="flex items-center">
-              <input type="checkbox" class="form-checkbox mr-2" /> Enable Legitbot
-            </label>
-            <label class="block mt-2">
-              Aimbot Key
-              <select class="block w-full bg-gray-700 text-white rounded p-1 mt-1">
+          <!-- Content -->
+          <div class="w-3/4 pl-4">
+            <div id="aimbot" class="tab-content grid grid-cols-2 gap-y-3">
+              <label class="flex justify-between items-center">Enable Aimbot <span class="switch"><input type="checkbox"><span class="slider"></span></span></label>
+              <label class="flex justify-between items-center">Auto Shoot <span class="switch"><input type="checkbox"><span class="slider"></span></span></label>
+              <label class="flex justify-between items-center">Aim Key <select class="bg-gray-700 rounded p-1 text-white">
                 <option>Mouse 1</option>
-                <option>Mouse 4</option>
+                <option>Mouse 2</option>
                 <option>Alt</option>
-              </select>
-            </label>
-          </div>
+              </select></label>
+            </div>
 
-          <!-- Ragebot -->
-          <div id="ragebot" class="tab hidden">
-            <h2 class="text-xl font-semibold">Ragebot Settings</h2>
-            <label class="flex items-center">
-              <input type="checkbox" class="form-checkbox mr-2" /> Enable Ragebot
-            </label>
-            <label class="block mt-2">
-              Auto Fire
-              <input type="range" class="w-full mt-1" min="0" max="100" />
-            </label>
-          </div>
+            <div id="visuals" class="tab-content hidden grid grid-cols-2 gap-y-3">
+              <label class="flex justify-between items-center">Enable ESP <span class="switch"><input type="checkbox" checked><span class="slider"></span></span></label>
+              <label class="flex justify-between items-center">Enable Outline ESP <span class="switch"><input type="checkbox" checked><span class="slider"></span></span></label>
+              <label class="flex justify-between items-center">Box ESP <span class="switch"><input type="checkbox"><span class="slider"></span></span></label>
+              <label class="flex justify-between items-center">Corner Box ESP <span class="switch"><input type="checkbox"><span class="slider"></span></span></label>
+              <label class="flex justify-between items-center">Skeleton ESP <span class="switch"><input type="checkbox" checked><span class="slider"></span></span></label>
+              <label class="flex justify-between items-center">Username ESP <span class="switch"><input type="checkbox" checked><span class="slider"></span></span></label>
+              <label class="flex justify-between items-center">Distance ESP <span class="switch"><input type="checkbox" checked><span class="slider"></span></span></label>
+              <label class="flex justify-between items-center">Platform ESP <span class="switch"><input type="checkbox"><span class="slider"></span></span></label>
+              <label class="flex justify-between items-center">Line ESP <span class="switch"><input type="checkbox" checked><span class="slider"></span></span></label>
+            </div>
 
-          <!-- Visuals -->
-          <div id="visuals" class="tab hidden">
-            <h2 class="text-xl font-semibold">Visual Settings</h2>
-            <label class="flex items-center">
-              <input type="checkbox" class="form-checkbox mr-2" /> ESP Enabled
-            </label>
-            <label class="block mt-2">
-              Box Type
-              <select class="block w-full bg-gray-700 text-white rounded p-1 mt-1">
-                <option>2D</option>
-                <option>2D Corner</option>
-                <option>3D</option>
-              </select>
-            </label>
-          </div>
-
-          <!-- Misc -->
-          <div id="misc" class="tab hidden">
-            <h2 class="text-xl font-semibold">Miscellaneous</h2>
-            <label class="flex items-center">
-              <input type="checkbox" class="form-checkbox mr-2" /> Bunnyhop
-            </label>
-            <label class="flex items-center">
-              <input type="checkbox" class="form-checkbox mr-2" /> Auto Strafe
-            </label>
-          </div>
-
-          <!-- Config -->
-          <div id="config" class="tab hidden">
-            <h2 class="text-xl font-semibold">Config Manager</h2>
-            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Save Config</button>
-            <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded ml-2">Load Config</button>
+            <div id="extra" class="tab-content hidden grid grid-cols-2 gap-y-3">
+              <label class="flex justify-between items-center">Bunnyhop <span class="switch"><input type="checkbox"><span class="slider"></span></span></label>
+              <label class="flex justify-between items-center">Auto Strafe <span class="switch"><input type="checkbox"><span class="slider"></span></span></label>
+              <label class="flex justify-between items-center">Enable Radar <span class="switch"><input type="checkbox"><span class="slider"></span></span></label>
+              <label class="flex justify-between items-center">Show Crosshair <span class="switch"><input type="checkbox"><span class="slider"></span></span></label>
+            </div>
           </div>
         </div>
       </div>
+
     </main>
   </div>
 
   <script>
-    function showTab(id) {
-      document.querySelectorAll('.tab').forEach(el => el.classList.add('hidden'));
-      document.getElementById(id).classList.remove('hidden');
+    // Tabs Funktionalität
+    const tabs = document.querySelectorAll('.tabs button');
+    const tabContents = document.querySelectorAll('.tab-content');
 
-      document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
-      event.target.classList.add('active');
-    }
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Aktiven Tab Button setzen
+        tabs.forEach(t => {
+          t.classList.remove('bg-purple-600', 'active');
+          t.classList.add('bg-gray-800');
+        });
+        tab.classList.add('bg-purple-600', 'active');
+        tab.classList.remove('bg-gray-800');
+
+        // Passenden Content anzeigen
+        const target = tab.getAttribute('data-tab');
+        tabContents.forEach(content => {
+          if (content.id === target) {
+            content.classList.remove('hidden');
+          } else {
+            content.classList.add('hidden');
+          }
+        });
+      });
+    });
   </script>
 </body>
 </html>

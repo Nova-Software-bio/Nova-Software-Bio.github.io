@@ -2,14 +2,13 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nova Software</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
   <style>
     body {
       background-color: #0f172a;
     }
-    /* Sidebar Menü-Styling */
     .menu-item {
       @apply px-4 py-2 cursor-pointer hover:bg-gray-700;
     }
@@ -17,27 +16,22 @@
       @apply bg-gray-700;
     }
 
-    /* Cheat Menü Overlay Styles */
+    /* Overlay Cheat Menu Styles */
     .overlay {
       background-color: rgba(30, 30, 30, 0.95);
       border: 2px solid #444;
       padding: 20px;
-      width: 600px;
+      width: 700px;
       color: white;
       font-family: sans-serif;
       border-radius: 0.5rem;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
     }
-
-    /* Tabs Buttons */
     .tabs button {
       transition: background-color 0.3s;
     }
     .tabs button.active {
       background-color: #8B5CF6;
     }
-
-    /* Toggle Switch */
     .switch {
       position: relative;
       display: inline-block;
@@ -77,6 +71,29 @@
     input:checked + .slider:before {
       transform: translateX(20px);
     }
+
+    /* Tab content visibility */
+    .tab-content > div {
+      display: none;
+    }
+    .tab-content > div.active {
+      display: block;
+    }
+
+    /* Aimkey input style */
+    #aimkey {
+      background-color: #1e1e1e;
+      color: white;
+      border: 1px solid #555;
+      padding: 6px 8px;
+      border-radius: 0.25rem;
+      width: 100%;
+      cursor: pointer;
+      user-select: none;
+    }
+    #aimkey:focus {
+      outline: 2px solid #8B5CF6;
+    }
   </style>
 </head>
 <body class="text-white font-sans">
@@ -99,81 +116,155 @@
       </div>
 
       <!-- Cheat Menu Overlay -->
-      <div class="overlay mx-auto">
+      <div class="overlay shadow-lg mx-auto">
         <div class="text-center text-lg font-bold mb-4">
           Frosty <span class="text-purple-400">Silent</span>
         </div>
         <div class="flex">
           <!-- Tabs -->
           <div class="tabs w-1/4 space-y-2 pr-4 border-r border-gray-600">
-            <button class="block w-full py-2 px-4 bg-purple-600 rounded text-white active" data-tab="aimbot">Aimbot</button>
-            <button class="block w-full py-2 px-4 bg-gray-800 hover:bg-purple-600 rounded text-white" data-tab="visuals">Visuals</button>
-            <button class="block w-full py-2 px-4 bg-gray-800 hover:bg-purple-600 rounded text-white" data-tab="extra">Extra</button>
+            <button class="tab-btn block w-full py-2 px-4 bg-purple-600 text-white rounded active" data-tab="aimbot">Aimbot</button>
+            <button class="tab-btn block w-full py-2 px-4 bg-gray-800 hover:bg-purple-600 text-white rounded" data-tab="visuals">Visuals</button>
+            <button class="tab-btn block w-full py-2 px-4 bg-gray-800 hover:bg-purple-600 text-white rounded" data-tab="extra">Extra</button>
           </div>
 
           <!-- Content -->
-          <div class="w-3/4 pl-4">
-            <div id="aimbot" class="tab-content grid grid-cols-2 gap-y-3">
-              <label class="flex justify-between items-center">Enable Aimbot <span class="switch"><input type="checkbox"><span class="slider"></span></span></label>
-              <label class="flex justify-between items-center">Auto Shoot <span class="switch"><input type="checkbox"><span class="slider"></span></span></label>
-              <label class="flex justify-between items-center">Aim Key <select class="bg-gray-700 rounded p-1 text-white">
-                <option>Mouse 1</option>
-                <option>Mouse 2</option>
-                <option>Alt</option>
-              </select></label>
+          <div class="tab-content w-3/4 pl-4 grid grid-cols-2 gap-y-3">
+            <!-- Aimbot Tab -->
+            <div id="aimbot" class="active col-span-2 space-y-3">
+              <label class="flex justify-between items-center">
+                Enable Aimbot
+                <span class="switch">
+                  <input type="checkbox" id="enableAimbot" checked />
+                  <span class="slider"></span>
+                </span>
+              </label>
+
+              <label class="block">
+                Smoothness: <span id="smoothnessValue" class="font-semibold">50</span>
+                <input type="range" id="smoothness" min="0" max="100" value="50" class="w-full mt-1" />
+              </label>
+
+              <label class="block">
+                Aimkey:
+                <input type="text" id="aimkey" readonly placeholder="Klicke hier und drücke eine Taste" />
+              </label>
             </div>
 
-            <div id="visuals" class="tab-content hidden grid grid-cols-2 gap-y-3">
-              <label class="flex justify-between items-center">Enable ESP <span class="switch"><input type="checkbox" checked><span class="slider"></span></span></label>
-              <label class="flex justify-between items-center">Enable Outline ESP <span class="switch"><input type="checkbox" checked><span class="slider"></span></span></label>
-              <label class="flex justify-between items-center">Box ESP <span class="switch"><input type="checkbox"><span class="slider"></span></span></label>
-              <label class="flex justify-between items-center">Corner Box ESP <span class="switch"><input type="checkbox"><span class="slider"></span></span></label>
-              <label class="flex justify-between items-center">Skeleton ESP <span class="switch"><input type="checkbox" checked><span class="slider"></span></span></label>
-              <label class="flex justify-between items-center">Username ESP <span class="switch"><input type="checkbox" checked><span class="slider"></span></span></label>
-              <label class="flex justify-between items-center">Distance ESP <span class="switch"><input type="checkbox" checked><span class="slider"></span></span></label>
-              <label class="flex justify-between items-center">Platform ESP <span class="switch"><input type="checkbox"><span class="slider"></span></span></label>
-              <label class="flex justify-between items-center">Line ESP <span class="switch"><input type="checkbox" checked><span class="slider"></span></span></label>
+            <!-- Visuals Tab -->
+            <div id="visuals" class="col-span-2 space-y-3 hidden">
+              <label class="flex justify-between items-center">Enable ESP
+                <span class="switch"><input type="checkbox" checked><span class="slider"></span></span>
+              </label>
+              <label class="flex justify-between items-center">Enable Outline ESP
+                <span class="switch"><input type="checkbox" checked><span class="slider"></span></span>
+              </label>
+              <label class="flex justify-between items-center">Box ESP
+                <span class="switch"><input type="checkbox"><span class="slider"></span></span>
+              </label>
+              <label class="flex justify-between items-center">Corner Box ESP
+                <span class="switch"><input type="checkbox"><span class="slider"></span></span>
+              </label>
+              <label class="flex justify-between items-center">Skeleton ESP
+                <span class="switch"><input type="checkbox" checked><span class="slider"></span></span>
+              </label>
+              <label class="flex justify-between items-center">Username ESP
+                <span class="switch"><input type="checkbox" checked><span class="slider"></span></span>
+              </label>
+              <label class="flex justify-between items-center">Distance ESP
+                <span class="switch"><input type="checkbox" checked><span class="slider"></span></span>
+              </label>
+              <label class="flex justify-between items-center">Platform ESP
+                <span class="switch"><input type="checkbox"><span class="slider"></span></span>
+              </label>
+              <label class="flex justify-between items-center">Line ESP
+                <span class="switch"><input type="checkbox" checked><span class="slider"></span></span>
+              </label>
             </div>
 
-            <div id="extra" class="tab-content hidden grid grid-cols-2 gap-y-3">
-              <label class="flex justify-between items-center">Bunnyhop <span class="switch"><input type="checkbox"><span class="slider"></span></span></label>
-              <label class="flex justify-between items-center">Auto Strafe <span class="switch"><input type="checkbox"><span class="slider"></span></span></label>
-              <label class="flex justify-between items-center">Enable Radar <span class="switch"><input type="checkbox"><span class="slider"></span></span></label>
-              <label class="flex justify-between items-center">Show Crosshair <span class="switch"><input type="checkbox"><span class="slider"></span></span></label>
+            <!-- Extra Tab -->
+            <div id="extra" class="col-span-2 space-y-3 hidden">
+              <label class="flex justify-between items-center">
+                Bunnyhop
+                <span class="switch">
+                  <input type="checkbox" />
+                  <span class="slider"></span>
+                </span>
+              </label>
+              <label class="flex justify-between items-center">
+                Auto Strafe
+                <span class="switch">
+                  <input type="checkbox" />
+                  <span class="slider"></span>
+                </span>
+              </label>
             </div>
           </div>
         </div>
       </div>
-
     </main>
   </div>
 
   <script>
-    // Tabs Funktionalität
-    const tabs = document.querySelectorAll('.tabs button');
-    const tabContents = document.querySelectorAll('.tab-content');
-
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        // Aktiven Tab Button setzen
-        tabs.forEach(t => {
-          t.classList.remove('bg-purple-600', 'active');
-          t.classList.add('bg-gray-800');
+    // Tab switching
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Remove active from buttons
+        document.querySelectorAll('.tab-btn').forEach(b => {
+          b.classList.remove('active');
+          b.style.backgroundColor = '#2d2d2d';
+          b.classList.remove('bg-purple-600');
+          b.classList.add('bg-gray-800');
         });
-        tab.classList.add('bg-purple-600', 'active');
-        tab.classList.remove('bg-gray-800');
 
-        // Passenden Content anzeigen
-        const target = tab.getAttribute('data-tab');
-        tabContents.forEach(content => {
-          if (content.id === target) {
-            content.classList.remove('hidden');
-          } else {
-            content.classList.add('hidden');
-          }
+        // Add active to clicked button
+        btn.classList.add('active');
+        btn.classList.remove('bg-gray-800');
+        btn.classList.add('bg-purple-600');
+
+        // Show content
+        const tab = btn.getAttribute('data-tab');
+        document.querySelectorAll('.tab-content > div').forEach(div => {
+          div.classList.remove('active');
+          div.classList.add('hidden');
         });
+        const activeDiv = document.getElementById(tab);
+        if (activeDiv) {
+          activeDiv.classList.add('active');
+          activeDiv.classList.remove('hidden');
+        }
       });
     });
+
+    // Smoothness slider display update
+    const smoothnessSlider = document.getElementById('smoothness');
+    const smoothnessValue = document.getElementById('smoothnessValue');
+    smoothnessSlider.addEventListener('input', () => {
+      smoothnessValue.textContent = smoothnessSlider.value;
+    });
+
+    // Aimkey input: capture key pressed after focusing input
+    const aimkeyInput = document.getElementById('aimkey');
+    aimkeyInput.addEventListener('focus', () => {
+      aimkeyInput.value = "Drücke eine Taste...";
+      function onKeyDown(event) {
+        event.preventDefault();
+        let keyName = event.key;
+
+        // Einige Specialkeys schöner darstellen:
+        if(keyName === " ") keyName = "Leertaste";
+        else if(keyName === "Escape") keyName = "Escape";
+        else if(keyName.length === 1) keyName = keyName.toUpperCase();
+
+        aimkeyInput.value = keyName;
+        aimkeyInput.blur();
+        window.removeEventListener('keydown', onKeyDown);
+      }
+      window.addEventListener('keydown', onKeyDown);
+    });
+
+    // Damit man Aimkey nicht manuell editieren kann
+    aimkeyInput.addEventListener('keydown', e => e.preventDefault());
   </script>
 </body>
 </html>

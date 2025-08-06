@@ -59,6 +59,8 @@
     .tab-pane.active {
       display: block;
     }
+
+    /* DARK ROUND TOGGLE SWITCH */
     .switch {
       position: relative;
       display: inline-block;
@@ -74,27 +76,33 @@
       position: absolute;
       cursor: pointer;
       top: 0; left: 0; right: 0; bottom: 0;
-      background-color: #444;
-      transition: 0.2s;
+      background-color: #222;
+      transition: 0.3s;
       border-radius: 9999px;
+      box-shadow: inset 0 0 5px #000;
     }
     .slider:before {
       position: absolute;
       content: "";
-      height: 14px;
-      width: 14px;
-      left: 3px;
-      bottom: 3px;
-      background-color: white;
-      transition: 0.2s;
+      height: 16px;
+      width: 16px;
+      left: 2px;
+      bottom: 2px;
+      background-color: #444;
+      transition: 0.3s;
       border-radius: 50%;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.6);
     }
     input:checked + .slider {
-      background-color: #a855f7;
+      background-color: #7c3aed; /* purple highlight */
+      box-shadow: 0 0 8px #7c3aed;
     }
     input:checked + .slider:before {
       transform: translateX(20px);
+      background-color: #a78bfa; /* lighter purple knob */
+      box-shadow: 0 0 8px #a78bfa;
     }
+
     #aimkey {
       background-color: #1e1e1e;
       color: white;
@@ -156,11 +164,9 @@
 
     <!-- Main content -->
     <main class="flex-1 flex flex-col p-6 overflow-y-auto">
-      <div class="flex justify-center mb-8">
-        <div class="bg-gray-900 bg-opacity-50 px-8 py-6 rounded-xl text-center shadow-lg">
-          <h1 class="text-4xl font-bold mb-2">Welcome to Nova Software</h1>
-          <p class="text-gray-400">This is a checkpoint for all of our social links.</p>
-        </div>
+      <div class="text-center mb-8">
+        <h1 class="text-4xl font-bold mb-2">Welcome to Nova Software</h1>
+        <p class="text-gray-400">This is a checkpoint for all of our social links.</p>
       </div>
 
       <!-- Cheat Menu Overlay -->
@@ -230,13 +236,13 @@
                 <span class="slider"></span>
               </span>
             </label>
-            </div>
+          </div>
         </div>
 
         <div class="preview">
-          <h2>Visuals Preview</h2>
+          <h2>Preview</h2>
           <div class="preview-box">
-            <canvas id="espCanvas" width="220" height="280"></canvas>
+            <canvas id="previewCanvas" width="200" height="280"></canvas>
           </div>
         </div>
       </div>
@@ -244,59 +250,58 @@
   </div>
 
   <script>
-    // Tabs switching code (unchanged)
-    const tabs = document.querySelectorAll('.tabs button');
-    const tabPanes = document.querySelectorAll('.tab-pane');
+    // Tab switching logic
+    const tabs = document.querySelectorAll(".tabs button");
+    const panes = document.querySelectorAll(".tab-pane");
+
     tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        tabs.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        const target = tab.getAttribute('data-tab');
-        tabPanes.forEach(pane => {
-          pane.classList.toggle('active', pane.id === target);
+      tab.addEventListener("click", () => {
+        tabs.forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
+
+        panes.forEach(pane => {
+          pane.classList.remove("active");
+          if (pane.id === tab.dataset.tab) {
+            pane.classList.add("active");
+          }
         });
       });
     });
 
-    // Aimkey input key listener
-    const aimkeyInput = document.getElementById('aimkey');
-    aimkeyInput.addEventListener('focus', () => {
-      aimkeyInput.value = 'Press a key...';
-      function onKeyDown(e) {
-        e.preventDefault();
-        aimkeyInput.value = e.key.length === 1 ? e.key.toUpperCase() : e.key;
+    // Aimkey input capture
+    const aimkeyInput = document.getElementById("aimkey");
+    aimkeyInput.addEventListener("focus", () => {
+      aimkeyInput.value = "";
+      function onKeyDown(event) {
+        event.preventDefault();
+        aimkeyInput.value = event.key;
         aimkeyInput.blur();
-        window.removeEventListener('keydown', onKeyDown);
+        window.removeEventListener("keydown", onKeyDown);
       }
-      window.addEventListener('keydown', onKeyDown);
+      window.addEventListener("keydown", onKeyDown);
     });
 
-    // ESP canvas preview (simple placeholder)
-    const canvas = document.getElementById('espCanvas');
-    const ctx = canvas.getContext('2d');
+    // Smoothness range update
+    const smoothnessRange = document.getElementById("smoothness");
+    const smoothnessValue = document.getElementById("smoothnessValue");
+    smoothnessRange.addEventListener("input", () => {
+      smoothnessValue.textContent = smoothnessRange.value;
+    });
 
-    function drawESPPreview() {
+    // Simple preview drawing (just an example)
+    const canvas = document.getElementById("previewCanvas");
+    const ctx = canvas.getContext("2d");
+
+    function drawPreview() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      // Example: Draw a rectangle representing a player box
-      ctx.strokeStyle = '#a855f7';
-      ctx.lineWidth = 2;
-      ctx.strokeRect(50, 50, 120, 180);
-
-      // Skeleton (simplified)
-      ctx.beginPath();
-      ctx.moveTo(110, 60);
-      ctx.lineTo(110, 180);
-      ctx.moveTo(110, 80);
-      ctx.lineTo(80, 110);
-      ctx.moveTo(110, 80);
-      ctx.lineTo(140, 110);
-      ctx.moveTo(110, 180);
-      ctx.lineTo(80, 210);
-      ctx.moveTo(110, 180);
-      ctx.lineTo(140, 210);
-      ctx.stroke();
+      ctx.fillStyle = "#7c3aed";
+      ctx.fillRect(50, 50, 100, 100);
+      ctx.strokeStyle = "#a78bfa";
+      ctx.lineWidth = 5;
+      ctx.strokeRect(50, 50, 100, 100);
     }
-    drawESPPreview();
+    drawPreview();
   </script>
 </body>
 </html>
+

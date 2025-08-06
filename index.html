@@ -10,6 +10,11 @@
       width: 200px;
       height: 200px;
       transition: transform 0.1s linear;
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+    .perspective-wrapper {
+      perspective: 1000px;
     }
   </style>
 </head>
@@ -29,14 +34,12 @@
 
     <!-- Main Content -->
     <main class="flex-1 p-6 overflow-y-auto flex flex-col items-center justify-start text-center">
-
       <div class="mb-12">
         <h1 class="text-4xl font-bold mb-4">Welcome to Nova Software</h1>
         <p class="text-gray-400">This is a checkpoint for all of our social links.</p>
       </div>
 
-
-      <div class="relative">
+      <div class="relative perspective-wrapper">
         <img
           src="https://i.imgur.com/aJnvrRw.png"
           alt="Follower"
@@ -49,16 +52,20 @@
 
   <script>
     const img = document.getElementById("follower-image");
+    const wrapper = document.querySelector(".perspective-wrapper");
 
     document.addEventListener("mousemove", (e) => {
-      const rect = img.getBoundingClientRect();
+      const rect = wrapper.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
 
-      const angle = Math.atan2(e.clientY - centerY, e.clientX - centerX);
-      const degree = angle * (180 / Math.PI);
+      const deltaX = e.clientX - centerX;
+      const deltaY = e.clientY - centerY;
 
-      img.style.transform = `rotate(${degree}deg)`;
+      const rotateX = -deltaY / 25;
+      const rotateY = deltaX / 25;
+
+      img.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
     });
   </script>
 </body>

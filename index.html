@@ -14,24 +14,27 @@
       background-color: rgba(30, 30, 30, 0.95);
       border: 2px solid #444;
       padding: 20px;
-      width: 700px;
+      width: 900px;
       height: 480px; /* Höhe Visuals Tab */
       color: white;
       font-family: sans-serif;
       border-radius: 0.5rem;
       display: flex;
       flex-direction: row;
+      gap: 10px;
     }
 
     .tabs {
       width: 25%;
       border-right: 1px solid #666;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
 
     .tabs button {
       width: 100%;
       padding: 10px;
-      margin-bottom: 8px;
       background-color: #1e1e1e;
       color: white;
       border: none;
@@ -46,7 +49,7 @@
     }
 
     .tab-content {
-      width: 75%;
+      width: 50%;
       padding-left: 20px;
       overflow-y: auto;
       height: 100%;
@@ -116,6 +119,43 @@
     #aimkey:focus {
       outline: 2px solid #8b5cf6;
     }
+
+    /* Preview Fenster */
+    .preview {
+      width: 25%;
+      background-color: #1e1e1e;
+      border: 1px solid #555;
+      border-radius: 0.5rem;
+      padding: 15px;
+      color: #bbb;
+      font-size: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      user-select: none;
+    }
+
+    .preview h2 {
+      color: #8b5cf6;
+      margin-bottom: 15px;
+      font-weight: 700;
+    }
+
+    .preview-box {
+      width: 100%;
+      height: 280px;
+      background-color: #2a2a2a;
+      border: 2px solid #555;
+      border-radius: 0.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #777;
+      font-style: italic;
+      text-align: center;
+      padding: 10px;
+    }
   </style>
 </head>
 <body class="text-white font-sans">
@@ -162,7 +202,7 @@
 
             <label class="block mb-3">
               Aimkey:
-              <input type="text" id="aimkey" readonly placeholder="Klicke hier und drücke eine Taste" />
+              <input type="text" id="aimkey" readonly placeholder="Click here and press a key" />
             </label>
           </div>
 
@@ -213,6 +253,14 @@
             </label>
           </div>
         </div>
+
+        <div class="preview">
+          <h2>Visuals Preview</h2>
+          <div class="preview-box" id="visualPreview">
+            Preview Content<br />
+            (z.B. ESP-Darstellung)
+          </div>
+        </div>
       </div>
     </main>
   </div>
@@ -249,15 +297,15 @@
       smoothnessValue.textContent = smoothnessSlider.value;
     });
 
-    // Aimkey input: support keyboard keys and mouse buttons
+    // Aimkey input: support keyboard keys and mouse buttons (English names)
     const aimkeyInput = document.getElementById('aimkey');
     aimkeyInput.addEventListener('focus', () => {
-      aimkeyInput.value = "Drücke eine Taste...";
+      aimkeyInput.value = "Press a key...";
       function onKeyDown(event) {
         event.preventDefault();
         let keyName = event.key;
 
-        if (keyName === " ") keyName = "Leertaste";
+        if (keyName === " ") keyName = "Space";
         else if (keyName === "Escape") keyName = "Escape";
         else if (keyName.length === 1) keyName = keyName.toUpperCase();
 
@@ -268,13 +316,13 @@
       }
       function onMouseDown(event) {
         event.preventDefault();
-        // Maus-Tasten zu Namen mappen
+        // Mouse buttons mapped to English names
         let mouseButtonName;
         switch(event.button) {
-          case 0: mouseButtonName = "Linke Maustaste"; break;
-          case 1: mouseButtonName = "Mittlere Maustaste"; break;
-          case 2: mouseButtonName = "Rechte Maustaste"; break;
-          default: mouseButtonName = "Maustaste " + event.button;
+          case 0: mouseButtonName = "Left Mouse Button"; break;
+          case 1: mouseButtonName = "Middle Mouse Button"; break;
+          case 2: mouseButtonName = "Right Mouse Button"; break;
+          default: mouseButtonName = "Mouse Button " + event.button;
         }
         aimkeyInput.value = mouseButtonName;
         aimkeyInput.blur();
@@ -285,7 +333,7 @@
       window.addEventListener('mousedown', onMouseDown);
     });
 
-    // Verhindert manuelles Tippen in Aimkey Input
+    // Prevent manual typing in Aimkey Input
     aimkeyInput.addEventListener('keydown', e => e.preventDefault());
   </script>
 </body>

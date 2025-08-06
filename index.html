@@ -3,14 +3,52 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Nova Software Cheat Menu</title>
+  <title>Nova Software Cheats - ESP & Aimbot</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
   <style>
-    body {
-      background-color: #0f172a;
-      color: white;
-      font-family: sans-serif;
+    /* Reset & Base */
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #e0e0e0;
+      overflow-x: hidden;
     }
+
+    header, footer {
+      background-color: #111827;
+      padding: 1rem 2rem;
+      text-align: center;
+      color: #a78bfa;
+      box-shadow: 0 2px 6px #8b5cf633;
+      user-select: none;
+    }
+
+    header h1 {
+      font-weight: 700;
+      font-size: 2rem;
+      margin-bottom: 0.25rem;
+      letter-spacing: 0.06em;
+      text-shadow: 0 0 8px #8b5cf6;
+    }
+
+    header p {
+      font-weight: 400;
+      font-size: 1.1rem;
+      color: #c4b5fdcc;
+    }
+
+    main {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 2rem;
+      min-height: calc(100vh - 160px); /* Header + Footer */
+    }
+
+    /* Menü Overlay: exakt dein Menü unverändert */
     .overlay {
       position: fixed;
       top: 50%;
@@ -27,7 +65,10 @@
       gap: 20px;
       border-radius: 0.5rem;
       box-shadow: 0 0 20px #8b5cf6aa;
+      user-select: none;
     }
+
+    /* Rest des Menüs Styles aus vorherigem Code */
     .tabs {
       width: 25%;
       display: flex;
@@ -44,6 +85,7 @@
       border: none;
       font-weight: 600;
       transition: background-color 0.3s;
+      user-select: none;
     }
     .tabs button.active,
     .tabs button:hover {
@@ -120,118 +162,168 @@
       height: 280px;
       image-rendering: pixelated;
     }
+
+    /* Hidden class */
+    .hidden {
+      display: none !important;
+    }
+
+    /* Responsive */
+    @media (max-width: 700px) {
+      .overlay {
+        position: static;
+        transform: none;
+        width: 100%;
+        margin: 1rem auto;
+        flex-direction: column;
+        padding: 15px;
+        box-shadow: none;
+        border: none;
+      }
+      .tabs {
+        width: 100%;
+        flex-direction: row;
+        border-right: none;
+        border-bottom: 2px solid #444;
+      }
+      .tabs button {
+        flex: 1;
+        border-radius: 0;
+      }
+      .content {
+        width: 100%;
+        display: block;
+      }
+      canvas {
+        height: 180px;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="overlay" role="main" aria-label="Cheat Menu Overlay">
-    <!-- Tabs -->
-    <div class="tabs" role="tablist" aria-orientation="vertical">
-      <button role="tab" aria-selected="true" id="tab-aimbot" class="active" tabindex="0" data-tab="aimbot">Aimbot</button>
-      <button role="tab" aria-selected="false" id="tab-visuals" tabindex="-1" data-tab="visuals">Visuals</button>
-      <button role="tab" aria-selected="false" id="tab-extra" tabindex="-1" data-tab="extra">Extra</button>
+  <header>
+    <h1>Nova Software Cheats</h1>
+    <p>ESP & Aimbot – Benutzerfreundliches Cheat-Menü mit Preview</p>
+  </header>
+
+  <main>
+    <!-- Du kannst hier noch mehr Content hinzufügen, z.B. Anleitung oder News -->
+
+    <!-- Dein Overlay Menü unverändert -->
+    <div class="overlay" role="main" aria-label="Cheat Menu Overlay">
+      <!-- Tabs -->
+      <div class="tabs" role="tablist" aria-orientation="vertical">
+        <button role="tab" aria-selected="true" id="tab-aimbot" class="active" tabindex="0" data-tab="aimbot">Aimbot</button>
+        <button role="tab" aria-selected="false" id="tab-visuals" tabindex="-1" data-tab="visuals">Visuals</button>
+        <button role="tab" aria-selected="false" id="tab-extra" tabindex="-1" data-tab="extra">Extra</button>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <!-- Aimbot Tab Content -->
+        <div id="aimbot" class="tab-content" role="tabpanel" aria-labelledby="tab-aimbot">
+          <label>
+            Enable Aimbot
+            <label class="switch">
+              <input type="checkbox" id="enableAimbot" checked />
+              <span class="slider"></span>
+            </label>
+          </label>
+
+          <label>
+            Smoothness
+            <input type="range" id="smoothness" min="1" max="100" value="50" />
+          </label>
+
+          <label>
+            Aim Key
+            <div style="display:flex; align-items:center;">
+              <button id="aimKeyButton" class="slider-key" aria-label="Set Aim Key" tabindex="0">Mouse 1</button>
+            </div>
+          </label>
+        </div>
+
+        <!-- Visuals Tab Content -->
+        <div id="visuals" class="tab-content hidden" role="tabpanel" aria-labelledby="tab-visuals" style="grid-column: span 2;">
+          <label>
+            Enable ESP
+            <label class="switch">
+              <input type="checkbox" id="enableESP" checked />
+              <span class="slider"></span>
+            </label>
+          </label>
+          <label>
+            Outline ESP
+            <label class="switch">
+              <input type="checkbox" id="outlineESP" />
+              <span class="slider"></span>
+            </label>
+          </label>
+          <label>
+            Box ESP
+            <label class="switch">
+              <input type="checkbox" id="boxESP" checked />
+              <span class="slider"></span>
+            </label>
+          </label>
+          <label>
+            Corner Box ESP
+            <label class="switch">
+              <input type="checkbox" id="cornerBoxESP" />
+              <span class="slider"></span>
+            </label>
+          </label>
+          <label>
+            Skeleton ESP
+            <label class="switch">
+              <input type="checkbox" id="skeletonESP" checked />
+              <span class="slider"></span>
+            </label>
+          </label>
+          <label>
+            Username ESP
+            <label class="switch">
+              <input type="checkbox" id="usernameESP" checked />
+              <span class="slider"></span>
+            </label>
+          </label>
+          <label>
+            Distance ESP
+            <label class="switch">
+              <input type="checkbox" id="distanceESP" checked />
+              <span class="slider"></span>
+            </label>
+          </label>
+          <label>
+            Platform ESP
+            <label class="switch">
+              <input type="checkbox" id="platformESP" />
+              <span class="slider"></span>
+            </label>
+          </label>
+          <label>
+            Line ESP
+            <label class="switch">
+              <input type="checkbox" id="lineESP" checked />
+              <span class="slider"></span>
+            </label>
+          </label>
+
+          <!-- Preview Canvas -->
+          <canvas id="espPreview" width="320" height="280" aria-label="ESP Preview"></canvas>
+        </div>
+
+        <!-- Extra Tab Content -->
+        <div id="extra" class="tab-content hidden" role="tabpanel" aria-labelledby="tab-extra" style="grid-column: span 2;">
+          <p>Extra settings coming soon...</p>
+        </div>
+      </div>
     </div>
+  </main>
 
-    <!-- Content -->
-    <div class="content">
-      <!-- Aimbot Tab Content -->
-      <div id="aimbot" class="tab-content" role="tabpanel" aria-labelledby="tab-aimbot">
-        <label>
-          Enable Aimbot
-          <label class="switch">
-            <input type="checkbox" id="enableAimbot" checked />
-            <span class="slider"></span>
-          </label>
-        </label>
-
-        <label>
-          Smoothness
-          <input type="range" id="smoothness" min="1" max="100" value="50" />
-        </label>
-
-        <label>
-          Aim Key
-          <div style="display:flex; align-items:center;">
-            <button id="aimKeyButton" class="slider-key" aria-label="Set Aim Key" tabindex="0">Mouse 1</button>
-          </div>
-        </label>
-      </div>
-
-      <!-- Visuals Tab Content -->
-      <div id="visuals" class="tab-content hidden" role="tabpanel" aria-labelledby="tab-visuals" style="grid-column: span 2;">
-        <label>
-          Enable ESP
-          <label class="switch">
-            <input type="checkbox" id="enableESP" checked />
-            <span class="slider"></span>
-          </label>
-        </label>
-        <label>
-          Outline ESP
-          <label class="switch">
-            <input type="checkbox" id="outlineESP" />
-            <span class="slider"></span>
-          </label>
-        </label>
-        <label>
-          Box ESP
-          <label class="switch">
-            <input type="checkbox" id="boxESP" checked />
-            <span class="slider"></span>
-          </label>
-        </label>
-        <label>
-          Corner Box ESP
-          <label class="switch">
-            <input type="checkbox" id="cornerBoxESP" />
-            <span class="slider"></span>
-          </label>
-        </label>
-        <label>
-          Skeleton ESP
-          <label class="switch">
-            <input type="checkbox" id="skeletonESP" checked />
-            <span class="slider"></span>
-          </label>
-        </label>
-        <label>
-          Username ESP
-          <label class="switch">
-            <input type="checkbox" id="usernameESP" checked />
-            <span class="slider"></span>
-          </label>
-        </label>
-        <label>
-          Distance ESP
-          <label class="switch">
-            <input type="checkbox" id="distanceESP" checked />
-            <span class="slider"></span>
-          </label>
-        </label>
-        <label>
-          Platform ESP
-          <label class="switch">
-            <input type="checkbox" id="platformESP" />
-            <span class="slider"></span>
-          </label>
-        </label>
-        <label>
-          Line ESP
-          <label class="switch">
-            <input type="checkbox" id="lineESP" checked />
-            <span class="slider"></span>
-          </label>
-        </label>
-
-        <!-- Preview Canvas -->
-        <canvas id="espPreview" width="320" height="280" aria-label="ESP Preview"></canvas>
-      </div>
-
-      <!-- Extra Tab Content -->
-      <div id="extra" class="tab-content hidden" role="tabpanel" aria-labelledby="tab-extra" style="grid-column: span 2;">
-        <p>Extra settings coming soon...</p>
-      </div>
-    </div>
-  </div>
+  <footer>
+    <small>© 2025 Nova Software • <a href="#" style="color:#a78bfa; text-decoration:underline;">Privacy Policy</a></small>
+  </footer>
 
   <script>
     // Tabs switch logic
@@ -243,73 +335,48 @@
         tabs.forEach(t => {
           t.classList.remove('active');
           t.setAttribute('aria-selected', 'false');
-          t.setAttribute('tabindex', '-1');
+          t.tabIndex = -1;
         });
+        tabContents.forEach(c => c.classList.add('hidden'));
+
         tab.classList.add('active');
         tab.setAttribute('aria-selected', 'true');
-        tab.setAttribute('tabindex', '0');
+        tab.tabIndex = 0;
 
         const target = tab.dataset.tab;
-        tabContents.forEach(content => {
-          if(content.id === target) {
-            content.classList.remove('hidden');
-          } else {
-            content.classList.add('hidden');
-          }
-        });
+        document.getElementById(target).classList.remove('hidden');
       });
     });
 
-    // Aim Key picker logic
+    // Aim Key setting logic
     const aimKeyButton = document.getElementById('aimKeyButton');
-    let waitingForKey = false;
     let aimKey = 'Mouse 1';
 
-    const mouseButtons = {
-      0: 'Mouse 1',
-      1: 'Mouse 2',
-      2: 'Mouse 3',
-      3: 'Mouse 4',
-      4: 'Mouse 5'
-    };
-
     aimKeyButton.addEventListener('click', () => {
-      if(waitingForKey) return;
-      waitingForKey = true;
-      aimKeyButton.textContent = 'Press any key or mouse button...';
-      aimKeyButton.style.backgroundColor = '#6b21a8'; // darker purple
-      aimKeyButton.style.cursor = 'progress';
+      aimKeyButton.textContent = 'Press a key...';
 
-      function keyListener(e) {
+      const keyHandler = (e) => {
         e.preventDefault();
-
-        // Mouse buttons
-        if (e.type === 'mousedown') {
-          if(mouseButtons[e.button]) {
-            aimKey = mouseButtons[e.button];
+        // Ignore modifier-only keys
+        const ignored = ['Shift', 'Control', 'Alt', 'Meta'];
+        if (!ignored.includes(e.key)) {
+          if(e.code.startsWith('Mouse')) {
+            // Mouse keys e.g. Mouse1, Mouse2
+            aimKey = e.code.replace('Mouse', 'Mouse ');
+          } else if(e.code.startsWith('Digit')) {
+            aimKey = e.key;
           } else {
-            aimKey = 'Mouse ' + (e.button + 1);
+            aimKey = e.key.length === 1 ? e.key.toUpperCase() : e.key;
           }
-        } else if (e.type === 'keydown') {
-          // Ignore modifier keys for better UX
-          if(['Shift', 'Control', 'Alt', 'Meta'].includes(e.key)) return;
-          aimKey = e.key.length === 1 ? e.key.toUpperCase() : e.key;
+          aimKeyButton.textContent = aimKey;
+          window.removeEventListener('keydown', keyHandler);
         }
+      };
 
-        aimKeyButton.textContent = aimKey;
-        aimKeyButton.style.backgroundColor = '#8b5cf6';
-        aimKeyButton.style.cursor = 'pointer';
-        waitingForKey = false;
-
-        window.removeEventListener('keydown', keyListener);
-        window.removeEventListener('mousedown', keyListener);
-      }
-
-      window.addEventListener('keydown', keyListener);
-      window.addEventListener('mousedown', keyListener);
+      window.addEventListener('keydown', keyHandler, { once: true });
     });
 
-    // ESP Preview logic
+    // ESP Preview Drawing - gleiche Logik wie vorher
     const canvas = document.getElementById('espPreview');
     const ctx = canvas.getContext('2d');
 
@@ -322,21 +389,19 @@
       usernameESP: document.getElementById('usernameESP'),
       distanceESP: document.getElementById('distanceESP'),
       platformESP: document.getElementById('platformESP'),
-      lineESP: document.getElementById('lineESP')
+      lineESP: document.getElementById('lineESP'),
     };
 
     function drawESP() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
       if (!settings.enableESP.checked) return;
 
-      // Player box position and size
+      // Player box dimensions
       const boxWidth = 100;
-      const boxHeight = 140;
+      const boxHeight = 200;
       const boxLeft = (canvas.width - boxWidth) / 2;
       const boxTop = (canvas.height - boxHeight) / 2;
 
-      // Player center X for skeleton
       const playerX = boxLeft + boxWidth / 2;
 
       // Outline ESP - thick dashed outline
@@ -455,14 +520,11 @@
       }
     }
 
-    // Initial draw
+    // Initial draw and redraw on changes
     drawESP();
-
-    // Redraw on changes
     Object.values(settings).forEach(input => {
       input.addEventListener('change', drawESP);
     });
-
   </script>
 </body>
 </html>

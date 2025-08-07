@@ -59,8 +59,6 @@
     .tab-pane.active {
       display: block;
     }
-
-    /* DARK ROUND TOGGLE SWITCH */
     .switch {
       position: relative;
       display: inline-block;
@@ -76,33 +74,27 @@
       position: absolute;
       cursor: pointer;
       top: 0; left: 0; right: 0; bottom: 0;
-      background-color: #222;
-      transition: 0.3s;
+      background-color: #444;
+      transition: 0.2s;
       border-radius: 9999px;
-      box-shadow: inset 0 0 5px #000;
     }
     .slider:before {
       position: absolute;
       content: "";
-      height: 16px;
-      width: 16px;
-      left: 2px;
-      bottom: 2px;
-      background-color: #444;
-      transition: 0.3s;
+      height: 14px;
+      width: 14px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.2s;
       border-radius: 50%;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.6);
     }
     input:checked + .slider {
-      background-color: #7c3aed; /* purple highlight */
-      box-shadow: 0 0 8px #7c3aed;
+      background-color: #a855f7;
     }
     input:checked + .slider:before {
       transform: translateX(20px);
-      background-color: #a78bfa; /* lighter purple knob */
-      box-shadow: 0 0 8px #a78bfa;
     }
-
     #aimkey {
       background-color: #1e1e1e;
       color: white;
@@ -236,7 +228,231 @@
                 <span class="slider"></span>
               </span>
             </label>
-          </div>
+            </div>
         </div>
 
-        <div class
+        <div class="preview">
+          <h2>Visuals Preview</h2>
+          <div class="preview-box">
+            <canvas id="espCanvas" width="220" height="280"></canvas>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Tabs switching code (unchanged)
+    const tabs = document.querySelectorAll('.tabs button');
+    const tabPanes = document.querySelectorAll('.tab-pane');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const target = tab.getAttribute('data-tab');
+        tabPanes.forEach(pane => {
+          pane.classList.toggle('active', pane.id === target);
+        });
+      });
+    });
+
+    // Smoothness slider
+    const smoothnessSlider = document.getElementById('smoothness');
+    const smoothnessValue = document.getElementById('smoothnessValue');
+    smoothnessSlider.addEventListener('input', () => {
+      smoothnessValue.textContent = smoothnessSlider.value;
+    });
+
+    // Aimkey input
+    const aimkeyInput = document.getElementById('aimkey');
+    aimkeyInput.addEventListener('focus', () => {
+      aimkeyInput.value = "Press a key...";
+      function onKeyDown(event) {
+        event.preventDefault();
+        let keyName = event.key;
+        if (keyName === " ") keyName = "Space";
+        else if (keyName === "Escape") keyName = "Escape";
+        else if (keyName.length === 1) keyName = keyName.toUpperCase();
+        aimkeyInput.value = keyName;
+        aimkeyInput.blur();
+        window.removeEventListener('keydown', onKeyDown);
+        window.removeEventListener('mousedown', onMouseDown);
+      }
+      function onMouseDown(event) {
+        event.preventDefault();
+        let mouseButtonName;
+        switch(event.button) {
+          case 0: mouseButtonName = "Left Mouse Button"; break;
+          case 1: mouseButtonName = "Middle Mouse Button"; break;
+          case 2: mouseButtonName = "Right Mouse Button"; break;
+          default: mouseButtonName = "Mouse Button " + event.button;
+        }
+        aimkeyInput.value = mouseButtonName;
+        aimkeyInput.blur();
+        window.removeEventListener('keydown', onKeyDown);
+        window.removeEventListener('mousedown', onMouseDown);
+      }
+      window.addEventListener('keydown', onKeyDown);
+      window.addEventListener('mousedown', onMouseDown);
+    });
+    aimkeyInput.addEventListener('keydown', e => e.preventDefault());
+
+    // --- ESP Preview Drawing ---
+    const canvas = document.getElementById('espCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // ESP Settings checkboxes
+    const settings = {
+      enableESP: document.getElementById('enableESP'),
+      outlineESP: document.getElementById('outlineESP'),
+      boxESP: document.getElementById('boxESP'),
+      cornerBoxESP: document.getElementById('cornerBoxESP'),
+      skeletonESP: document.getElementById('skeletonESP'),
+      usernameESP: document.getElementById('usernameESP'),
+      distanceESP: document.getElementById('distanceESP'),
+      platformESP: document.getElementById('platformESP'),
+      lineESP: document.getElementById('lineESP')
+    };
+
+    // Player position on canvas
+    const playerX = canvas.width / 2;
+    const playerY = canvas.height / 2 + 30;
+
+    // Draw loop
+    function drawESP() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (!settings.enableESP.checked) {
+        // ESP disabled: Show text only
+        ctx.fillStyle = '#777';
+        ctx.font = '16px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('ESP Disabled', playerX, canvas.height/2);
+        return;
+      }
+
+      // Helper styles
+      const outlineWidth = settings.outlineESP.checked ? 4 : 2;
+      ctx.lineWidth = outlineWidth;
+
+      // Draw Box or Corner Box
+      if (settings.boxESP.checked || settings.cornerBoxESP.checked) {
+        ctx.strokeStyle = settings.outlineESP.checked ? '#a855f7' : '#00ffff';
+      } else {
+        ctx.strokeStyle = '#00ffff'; // default color
+      }
+
+      // Box dimensions
+      const boxWidth = 60;
+      const boxHeight = 100;
+      const boxLeft = playerX - boxWidth/2;
+      const boxTop = playerY - boxHeight;
+
+      // Draw Box ESP
+      if (settings.boxESP.checked) {
+        ctx.beginPath();
+        ctx.strokeRect(boxLeft, boxTop, boxWidth, boxHeight);
+      }
+
+      // Draw Corner Box ESP
+      if (settings.cornerBoxESP.checked) {
+        const cornerLen = 15;
+        ctx.beginPath();
+        // top-left
+        ctx.moveTo(boxLeft, boxTop + cornerLen);
+        ctx.lineTo(boxLeft, boxTop);
+        ctx.lineTo(boxLeft + cornerLen, boxTop);
+        // top-right
+        ctx.moveTo(boxLeft + boxWidth - cornerLen, boxTop);
+        ctx.lineTo(boxLeft + boxWidth, boxTop);
+        ctx.lineTo(boxLeft + boxWidth, boxTop + cornerLen);
+        // bottom-left
+        ctx.moveTo(boxLeft, boxTop + boxHeight - cornerLen);
+        ctx.lineTo(boxLeft, boxTop + boxHeight);
+        ctx.lineTo(boxLeft + cornerLen, boxTop + boxHeight);
+        // bottom-right
+        ctx.moveTo(boxLeft + boxWidth - cornerLen, boxTop + boxHeight);
+        ctx.lineTo(boxLeft + boxWidth, boxTop + boxHeight);
+        ctx.lineTo(boxLeft + boxWidth, boxTop + boxHeight - cornerLen);
+        ctx.stroke();
+      }
+
+      // Draw Skeleton ESP (stick figure)
+      if (settings.skeletonESP.checked) {
+        ctx.strokeStyle = '#a855f7';
+        ctx.lineWidth = 2;
+        const headRadius = 12;
+
+        // Head
+        ctx.beginPath();
+        ctx.arc(playerX, playerY - boxHeight - headRadius, headRadius, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // Body
+        ctx.beginPath();
+        ctx.moveTo(playerX, playerY - boxHeight);
+        ctx.lineTo(playerX, playerY - boxHeight + 40);
+        ctx.stroke();
+
+        // Arms
+        ctx.beginPath();
+        ctx.moveTo(playerX, playerY - boxHeight + 10);
+        ctx.lineTo(playerX - 20, playerY - boxHeight + 25);
+        ctx.moveTo(playerX, playerY - boxHeight + 10);
+        ctx.lineTo(playerX + 20, playerY - boxHeight + 25);
+        ctx.stroke();
+
+        // Legs
+        ctx.beginPath();
+        ctx.moveTo(playerX, playerY - boxHeight + 40);
+        ctx.lineTo(playerX - 15, playerY - boxHeight + 75);
+        ctx.moveTo(playerX, playerY - boxHeight + 40);
+        ctx.lineTo(playerX + 15, playerY - boxHeight + 75);
+        ctx.stroke();
+      }
+
+      // Draw Username ESP
+      if (settings.usernameESP.checked) {
+        ctx.fillStyle = '#a855f7';
+        ctx.font = 'bold 16px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Nova Software', playerX, playerY - boxHeight - 30);
+      }
+
+      // Draw Distance ESP
+      if (settings.distanceESP.checked) {
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '14px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('6.9m', playerX, playerY - boxHeight - 10);
+      }
+
+      // Draw Platform ESP
+      if (settings.platformESP.checked) {
+        ctx.fillStyle = '#3b82f6'; // bright blue
+        ctx.font = '14px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Win', playerX, playerY - boxHeight - 50);
+      }
+
+      // Draw Line ESP
+      if (settings.lineESP.checked) {
+        ctx.strokeStyle = '#a855f7';
+        ctx.lineWidth = outlineWidth;
+        ctx.beginPath();
+        ctx.moveTo(playerX, canvas.height); // bottom middle of canvas 
+        ctx.lineTo(playerX, playerY - boxHeight - 12); // player's head
+        ctx.stroke();
+      }
+    }
+
+    // Add event listeners to redraw on toggle change
+    Object.values(settings).forEach(input => {
+      input.addEventListener('change', drawESP);
+    });
+
+    // Initial draw
+    drawESP();
+  </script>
+</body>
+</html>
